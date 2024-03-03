@@ -1,0 +1,7 @@
+/* // /Projects/views/css/index.css */
+
+.square-box {
+  max-width: 600px;
+  min-height: 600px;
+  border: 1px solid #fff;
+}
