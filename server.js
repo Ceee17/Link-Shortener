@@ -18,6 +18,17 @@ app.get("/", async (req, res) => {
   res.render("index", { showShortenedLink: false, shortUrls: shortUrls });
 });
 
+// Add a route to handle delete requests
+app.post("/admin/delete/:id", async (req, res) => {
+  try {
+    await ShortUrl.findByIdAndDelete(req.params.id);
+    res.redirect("/admin");
+  } catch (error) {
+    console.error("Error deleting URL:", error);
+    res.status(500).send("Error deleting URL");
+  }
+});
+
 app.post("/admin/reset", async (req, res) => {
   await ShortUrl.deleteMany({});
   res.redirect("/admin");
