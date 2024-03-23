@@ -1,5 +1,6 @@
 // ./server.js
 const express = require("express");
+require("dotenv").config();
 const mongoose = require("mongoose");
 const expressLayouts = require("express-ejs-layouts");
 const ShortUrl = require("./models/shortUrl");
@@ -7,7 +8,7 @@ const shortId = require("shortid");
 const app = express();
 const port = process.env.PORT || 5000;
 
-mongoose.connect("mongodb://localhost/linkShortener", {
+mongoose.connect(process.env.MONGODB_URI, {
   bufferCommands: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,
