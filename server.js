@@ -17,6 +17,7 @@ app.set("view engine", "ejs");
 app.use(expressLayouts);
 // app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Render the index page
 app.get("/", async (req, res) => {
