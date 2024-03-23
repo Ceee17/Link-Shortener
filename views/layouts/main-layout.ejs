@@ -1,0 +1,67 @@
+<!-- ./views/layouts/main-layout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <!-- Include Tailwind CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" /> -->
+    <!-- Include DaisyUI -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@2.5.0/dist/full.css" rel="stylesheet" /> -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- import Fontawesome icon -->
+    <script src="https://kit.fontawesome.com/777c5149ce.js" crossorigin="anonymous"></script>
+    <!-- Include custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-dark text-white">
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-2">
+      <!-- Navbar content -->
+      <div class="container">
+        <a href="#"><i class="fas fa-scissors mr-1"></i>Snipify</a>
+        <button>
+          <% if(target === '/admin') { %>
+          <a href="/admin">Admin Section</a>
+          <% } else {%>
+          <a href="/">User Section</a>
+          <% } %>
+        </button>
+      </div>
+    </nav>
+    <!-- Content -->
+    <div class="container mx-auto flex-grow"><%- body %></div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+      <!-- Footer content -->
+      <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h4 class="text-xl font-bold mb-4">About Us</h4>
+          <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius dolor vitae nulla rhoncus blandit.</p>
+        </div>
+        <div>
+          <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-sm hover:text-gray-300">Home</a></li>
+            <li><a href="#" class="text-sm hover:text-gray-300">About</a></li>
+            <li><a href="#" class="text-sm hover:text-gray-300">Services</a></li>
+            <li><a href="#" class="text-sm hover:text-gray-300">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-xl font-bold mb-4">Contact Us</h4>
+          <p class="text-sm">123 Main Street, City, Country</p>
+          <p class="text-sm">info@example.com</p>
+          <p class="text-sm">+123 456 7890</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Include Tailwind CSS and DaisyUI JavaScript -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script> -->
+  </body>
+</html>
