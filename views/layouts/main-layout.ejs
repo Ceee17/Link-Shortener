@@ -14,21 +14,21 @@
     <!-- import Fontawesome icon -->
     <script src="https://kit.fontawesome.com/777c5149ce.js" crossorigin="anonymous"></script>
     <!-- Include custom CSS -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body class="bg-dark text-white">
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-2">
-      <!-- Navbar content -->
-      <div class="container">
-        <a href="#"><i class="fas fa-scissors mr-1"></i>Snipify</a>
-        <button>
-          <% if(target === '/admin') { %>
-          <a href="/admin">Admin Section</a>
-          <% } else {%>
-          <a href="/">User Section</a>
-          <% } %>
-        </button>
+    <nav class="bg-primary py-2">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="#" class="text-white text-lg font-bold flex items-center"> <i class="fas fa-scissors mr-1"></i> Snipify </a>
+        <!-- <a href="/admin" class="text-white text-lg font-bold">Admin Section</a> -->
+        <div class="dropdown dropdown-hover">
+          <div tabindex="0" role="button" class="btn">Login / Register</div>
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-60">
+            <li><a href="#" class="hover:bg-secondary-1">Login to User Hub</a></li>
+            <li><a href="/admin" class="hover:bg-secondary-1">Login to Admin Dashboard</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
     <!-- Content -->
