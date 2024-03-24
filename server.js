@@ -20,6 +20,19 @@ app.use(expressLayouts);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// START ROUTES FOR USER-DASHBOARD
+
+app.get("/user", async (req, res) => {
+  res.render("user", { layout: "layouts/main-layout", title: "User Dashboard" });
+});
+
+
+
+
+
+
+// END OF ROUTES FOR USER-DASHBOARD
+
 // Render the index page
 app.get("/", async (req, res) => {
   const shortUrls = await ShortUrl.find();
@@ -100,6 +113,8 @@ app.get("/:shortUrl", async (req, res) => {
 
   res.redirect(shortUrl.full);
 });
+
+
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/`);
