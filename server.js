@@ -6,7 +6,6 @@ const expressLayouts = require("express-ejs-layouts");
 const ShortUrl = require("./models/shortUrl");
 const session = require("express-session");
 const flash = require("express-flash");
-const shortId = require("shortid");
 const passport = require("passport");
 const app = express();
 const port = process.env.PORT || 5000;
@@ -41,6 +40,8 @@ app.use(express.json());
 
 // routes for authentication
 const authRoutes = require("./controller/authController");
+const adminController = require("./controller/adminController");
+const shortUrlController = require("./controller/shortUrlController");
 
 // Render the index page
 app.get("/", async (req, res) => {
@@ -49,6 +50,14 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/", authRoutes);
+
+app.use("/", adminController);
+
+app.use("/", shortUrlController);
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}/`); 
+});
 
 // Add a route to handle delete requests
 app.post("/admin/delete/:id", async (req, res) => {
