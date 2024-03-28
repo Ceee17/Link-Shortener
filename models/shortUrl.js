@@ -1,4 +1,4 @@
-// /Projects/models/shortUrl.js
+// ./models/shortUrl.js
 
 const mongoose = require("mongoose");
 // const shortId = require("shortid");
@@ -18,6 +18,16 @@ const shortUrlSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  description: {
+    type: String,
+    default: "none",
+  },
+
+  createdBy: { type: String, default: "guest" },
 });
 
 module.exports = mongoose.model("ShortUrl", shortUrlSchema);

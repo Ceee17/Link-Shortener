@@ -9,6 +9,8 @@
         <th class="px-4 py-2">Full URL</th>
         <th class="px-4 py-2">Short URL</th>
         <th class="px-4 py-2">Clicks</th>
+        <th class="px-4 py-2">Description</th>
+        <th class="px-4 py-2">Created By</th>
         <th class="px-4 py-2">Action</th>
       </tr>
     </thead>
@@ -18,6 +20,8 @@
         <td class="border px-4 py-2"><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
         <td class="border px-4 py-2"><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
         <td class="border px-4 py-2"><%= shortUrl.clicks %></td>
+        <td class="border px-4 py-2"><%= shortUrl.description %></td>
+        <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
         <td class="border px-4 py-2">
           <!-- Add buttons for CRUD operations -->
           <button id="updateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded update-button" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>

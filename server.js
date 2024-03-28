@@ -4,7 +4,10 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const expressLayouts = require("express-ejs-layouts");
 const ShortUrl = require("./models/shortUrl");
+const session = require("express-session");
+const flash = require("express-flash");
 const shortId = require("shortid");
+const passport = require("passport");
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -14,17 +17,38 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
 });
 
+// Initialize express session and flash
+app.use(
+  session({
+    secret: "rahasia",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./passport-config");
+
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 // app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// routes for authentication
+const authRoutes = require("./controller/authController");
+
 // Render the index page
 app.get("/", async (req, res) => {
   const shortUrls = await ShortUrl.find();
-  res.render("index", { layout: "layouts/main-layout", title: "Snipify", target: "/admin", showShortenedLink: false, shortUrls: shortUrls });
+  res.render("index", { layout: "layouts/main-layout", title: "Snipify", showShortenedLink: false, shortUrls: shortUrls });
 });
+
+app.use("/", authRoutes);
 
 // Add a route to handle delete requests
 app.post("/admin/delete/:id", async (req, res) => {
@@ -67,12 +91,14 @@ app.post("/admin/update/:id", async (req, res) => {
   }
 });
 
-app.get("/admin", async (req, res) => {
-  const shortUrls = await ShortUrl.find();
-  res.render("admin", { layout: "layouts/main-layout", title: "Admin Section", target: "/", shortUrls: shortUrls });
-});
-
 app.post("/shortUrl", async (req, res) => {
+  let createdBy;
+  // const userId = req.user.id;
+
+  if (req.user) {
+    createdBy = req.user.username;
+  }
+
   //TODO buat input field di frontend nya
   const customShortId = req.body.customShortId; // Assuming you have a form field for custom short ID
   let shortUrl;
@@ -85,10 +111,10 @@ app.post("/shortUrl", async (req, res) => {
     shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: customShortId });
   } else {
     const generatedShortId = shortId.generate();
-    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId });
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, createdBy: createdBy });
   }
 
-  res.render("index", { layout: "layouts/main-layout", title: "Snipify", target: "/admin", showShortenedLink: true, shortUrls: [shortUrl] });
+  res.render("index", { layout: "layouts/main-layout", title: "Snipify", showShortenedLink: true, shortUrls: [shortUrl] });
 });
 
 app.get("/:shortUrl", async (req, res) => {
