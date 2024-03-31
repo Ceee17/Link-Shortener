@@ -1,112 +1,92 @@
 <!-- ./views/admin.ejs -->
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <aside class="h-screen bg-gray-800 fixed z-10 left-0 top-0 text-white w-64 flex-shrink-0 transition-transform duration-300 transform hover:scale-x-105">
-    <div class="p-4">
-      <h1 class="text-xl font-bold">Sidebar</h1>
-      <ul class="mt-4">
-        <li class="py-2 px-4 hover:bg-gray-700">Menu Item 1</li>
-        <li class="py-2 px-4 hover:bg-gray-700">Menu Item 2</li>
-        <li class="py-2 px-4 hover:bg-gray-700">Menu Item 3</li>
-      </ul>
+
+<%- include('layouts/sidebar.ejs') %>
+<!-- content -->
+<main class="flex-1 container ml-72 mr-10 my-10">
+  <h1 class="text-center my-4 font-bold text-4xl">HISTORY</h1>
+
+  <table class="table-auto w-full border-collapse border border-blue-800">
+    <thead class="bg-blue-500 text-white">
+      <tr>
+        <th class="px-4 py-2">Full URL</th>
+        <th class="px-4 py-2">Short URL</th>
+        <th class="px-4 py-2">Clicks</th>
+        <th class="px-4 py-2">Description</th>
+        <th class="px-4 py-2">Created By</th>
+        <th class="px-4 py-2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% shortUrls.forEach(shortUrl => { %>
+      <tr>
+        <td class="border px-4 py-2"><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
+        <td class="border px-4 py-2"><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
+        <td class="border px-4 py-2"><%= shortUrl.clicks %></td>
+        <td class="border px-4 py-2"><%= shortUrl.description %></td>
+        <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
+        <td class="border px-4 py-2">
+          <!-- Add buttons for CRUD operations -->
+          <button id="updateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded update-button" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
+
+          <!-- Add form for delete button -->
+          <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="inline">
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <form action="/admin/reset" method="POST" class="mt-4">
+    <div class="flex justify-end">
+      <!-- Add a Reset button -->
+      <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mb-4 rounded-lg">Reset</button>
     </div>
-  </aside>
-  <!-- end of sidebar -->
+  </form>
+</main>
+<!-- end of content -->
 
-  <!-- content -->
-  <main class="flex-1 container ml-72 mr-10 my-10">
-    <h1 class="text-center my-4 font-bold text-4xl">Admin Section</h1>
-
-    <table class="table-auto w-full border-collapse border border-blue-800">
-      <thead class="bg-blue-500 text-white">
-        <tr>
-          <th class="px-4 py-2">Full URL</th>
-          <th class="px-4 py-2">Short URL</th>
-          <th class="px-4 py-2">Clicks</th>
-          <th class="px-4 py-2">Description</th>
-          <th class="px-4 py-2">Created By</th>
-          <th class="px-4 py-2">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% shortUrls.forEach(shortUrl => { %>
-        <tr>
-          <td class="border px-4 py-2"><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
-          <td class="border px-4 py-2"><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
-          <td class="border px-4 py-2"><%= shortUrl.clicks %></td>
-          <td class="border px-4 py-2"><%= shortUrl.description %></td>
-          <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
-          <td class="border px-4 py-2">
-            <!-- Add buttons for CRUD operations -->
-            <button id="updateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded update-button" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
-
-            <!-- Add form for delete button -->
-            <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="inline">
-              <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
-            </form>
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <form action="/admin/reset" method="POST" class="mt-4">
-      <div class="flex justify-end">
-        <!-- Add a Reset button -->
-        <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg">Reset</button>
-      </div>
+<!-- Start MODAL BOX -->
+<dialog id="my_modal_3" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
-  </main>
-  <!-- end of content -->
-
-  <!-- Start MODAL BOX -->
-  <dialog id="my_modal_3" class="modal">
-    <div class="modal-box">
-      <form method="dialog">
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-      </form>
-      <form action="/admin/update/" method="POST" id="updateForm">
-        <h3 class="font-bold text-lg">Update Form</h3>
-        <!-- Add input fields for updating data -->
-        <div class="mb-4">
-          <label for="fullUrl" class="block text-sm font-medium text-gray-700">Full URL</label>
-          <input
-            type="text"
-            name="fullUrl"
-            id="fullUrl"
-            class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter full URL"
-            required
-          />
-        </div>
-        <div class="mb-4">
-          <label for="shortUrl" class="block text-sm font-medium text-gray-700">Short URL</label>
-          <input
-            type="text"
-            name="shortUrl"
-            id="shortUrl"
-            class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter short URL"
-            required
-          />
-        </div>
-        <div class="mb-4">
-          <label for="clicks" class="block text-sm font-medium text-gray-700">Clicks</label>
-          <input
-            type="number"
-            name="clicks"
-            id="clicks"
-            class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            placeholder="Enter clicks"
-            required
-          />
-        </div>
-        <!-- Submit button for updating data -->
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
-      </form>
-    </div>
-  </dialog>
-  <!-- End MODAL BOX -->
-</div>
+    <form action="/admin/update/" method="POST" id="updateForm">
+      <h3 class="font-bold text-lg">Update Form</h3>
+      <!-- Add input fields for updating data -->
+      <div class="mb-4">
+        <label for="fullUrl" class="block text-sm font-medium text-gray-700">Full URL</label>
+        <input
+          type="text"
+          name="fullUrl"
+          id="fullUrl"
+          class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Enter full URL"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="shortUrl" class="block text-sm font-medium text-gray-700">Short URL</label>
+        <input
+          type="text"
+          name="shortUrl"
+          id="shortUrl"
+          class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Enter short URL"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="clicks" class="block text-sm font-medium text-gray-700">Clicks</label>
+        <input type="number" name="clicks" id="clicks" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Enter clicks" required />
+      </div>
+      <!-- Submit button for updating data -->
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+    </form>
+  </div>
+</dialog>
+<!-- End MODAL BOX -->
 
 <script>
   // Function to check if the modal is open

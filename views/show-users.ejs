@@ -1,0 +1,30 @@
+<!-- views/admin/users.ejs -->
+
+<%- include('layouts/sidebar.ejs') %>
+
+<!-- content -->
+<main class="flex-1 container ml-72 mr-10 my-10">
+  <h1 class="text-center my-4 font-bold text-4xl">Users Section</h1>
+
+  <table class="table-auto w-full border-collapse border border-blue-800">
+    <thead class="bg-blue-500 text-white">
+      <tr>
+        <th class="px-4 py-2">Username</th>
+        <th class="px-4 py-2">Password</th>
+        <th class="px-4 py-2">Is Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+      <tr>
+        <td class="border px-4 py-2"><%= user.username %></td>
+        <td class="border px-4 py-2">
+          <span class="password-display" style="white-space: pre-wrap"><%= user.password %></span>
+        </td>
+        <td class="border px-4 py-2"><%= user.isAdmin %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</main>
+<!-- end of content -->

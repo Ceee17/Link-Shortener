@@ -44,4 +44,18 @@ router.post("/admin/update/:id", async (req, res) => {
   }
 });
 
+// Example logout route handler
+router.post("/admin/logout", (req, res) => {
+  // Perform logout procedure
+  // For example, clear session or authentication tokens
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+    } else {
+      // Redirect to index page after logout
+      res.redirect("/");
+    }
+  });
+});
+
 module.exports = router;

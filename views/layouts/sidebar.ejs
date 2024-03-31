@@ -1,0 +1,17 @@
+<!-- Sidebar -->
+<aside class="h-screen flex gap-5 bg-gray-800 fixed z-10 left-0 top-0 text-white w-64 transition-transform duration-300 transform hover:scale-x-105">
+  <div class="p-4">
+    <h1 class="text-xl font-bold flex-start">Admin Page</h1>
+    <ul class="mt-4">
+      <li class="py-2 px-8 hover:bg-gray-700"><a href="/admin">Dashboard</a></li>
+      <li class="py-2 px-8 hover:bg-gray-700"><a href="/admin/users">Users</a></li>
+      <li class="py-2 px-8 hover:bg-gray-700"><a href="/admin/customize">Customize</a></li>
+    </ul>
+    <div class="p-4">
+      <form action="/admin/logout" method="POST">
+        <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">Logout</button>
+      </form>
+    </div>
+  </div>
+</aside>
+<!-- end of sidebar -->
