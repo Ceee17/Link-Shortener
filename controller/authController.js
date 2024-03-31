@@ -6,6 +6,10 @@ const bcrypt = require("bcrypt");
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const User = require("../models/user");
 
+router.get("/user", (req, res) => {
+  res.send("ok");
+});
+
 router.get("/admin/login", (req, res) => {
   res.render("admin-login", { layout: "layouts/form-layout", title: "Login Page" });
 });
@@ -55,7 +59,7 @@ router.post("/admin/create-account", async (req, res) => {
 
 router.get("/admin", isAdminAuthenticated, async (req, res) => {
   const shortUrls = await ShortUrl.find();
-  res.render("admin", { layout: "layouts/main-layout", title: "Admin Section", target: "/", shortUrls: shortUrls });
+  res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
 });
 
 // Middleware to check if user is an admin
