@@ -1,34 +1,30 @@
 // ./controller/authController.js
 const express = require("express");
-const router = express.Router();
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const User = require("../models/user");
 
-router.get("/user", (req, res) => {
+const getUserViews = (req, res) => {
   res.send("ok");
-});
+};
 
-router.get("/admin/login", (req, res) => {
+const getAdminLoginViews = (req, res) => {
   res.render("admin-login", { layout: "layouts/form-layout", title: "Login Page" });
+};
+
+const adminLoginSubmit = passport.authenticate("local", {
+  successRedirect: "/admin",
+  failureRedirect: "/admin/login",
+  failureFlash: true, // Enable flash messages for failure
+  successFlash: "Login successful!", // Flash message for successful login
 });
 
-router.post(
-  "/admin/login/submit",
-  passport.authenticate("local", {
-    successRedirect: "/admin",
-    failureRedirect: "/admin/login",
-    failureFlash: true, // Enable flash messages for failure
-    successFlash: "Login successful!", // Flash message for successful login
-  })
-);
-
-router.get("/admin/create-account", (req, res) => {
+const getAdminCreateAccountViews = (req, res) => {
   res.render("admin-signup", { layout: "layouts/form-layout", title: "admin create account" });
-});
+};
 // Route for creating admin accounts (accessible to anyone)
-router.post("/admin/create-account", async (req, res) => {
+const adminCreateAccount = async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -55,14 +51,14 @@ router.post("/admin/create-account", async (req, res) => {
     console.error("Error creating admin account:", error);
     res.status(500).send("Error creating admin account");
   }
-});
+};
 
-router.get("/admin", isAdminAuthenticated, async (req, res) => {
+const getAdminViews = async (req, res) => {
   const shortUrls = await ShortUrl.find();
   res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
-});
+};
 // Route to display users section in admin page
-router.get("/admin/users", isAdminAuthenticated, async (req, res) => {
+const getAdminUsersViews = async (req, res) => {
   try {
     // Fetch all users from the database
     const users = await User.find();
@@ -71,14 +67,6 @@ router.get("/admin/users", isAdminAuthenticated, async (req, res) => {
     console.error("Error fetching users:", error);
     res.status(500).send("Error fetching users");
   }
-});
+};
 
-// Middleware to check if user is an admin
-function isAdminAuthenticated(req, res, next) {
-  if (req.isAuthenticated() && req.user.isAdmin) {
-    return next();
-  }
-  res.redirect("/admin/login");
-}
-
-module.exports = router;
+module.exports = { getUserViews, getAdminLoginViews, adminLoginSubmit, getAdminCreateAccountViews, adminCreateAccount, getAdminViews, getAdminUsersViews };

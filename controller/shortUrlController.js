@@ -1,12 +1,10 @@
 // ./controller/shortUrlController.js
 const express = require("express");
-const router = express.Router();
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const shortId = require("shortid");
 
-router.post("/shortUrl", async (req, res) => {
+const shortenUrl = async (req, res) => {
   let createdBy;
-  // const userId = req.user.id;
 
   if (req.user) {
     createdBy = req.user.username;
@@ -28,9 +26,9 @@ router.post("/shortUrl", async (req, res) => {
   }
 
   res.render("index", { layout: "layouts/main-layout", title: "Snipify", showShortenedLink: true, shortUrls: [shortUrl] });
-});
+};
 
-router.get("/:shortUrl", async (req, res) => {
+const getShortenedUrl = async (req, res) => {
   const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
   if (shortUrl == null) return res.sendStatus(404);
 
@@ -38,6 +36,6 @@ router.get("/:shortUrl", async (req, res) => {
   shortUrl.save();
 
   res.redirect(shortUrl.full);
-});
+};
 
-module.exports = router;
+module.exports = { shortenUrl, getShortenedUrl };

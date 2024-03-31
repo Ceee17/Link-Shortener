@@ -1,10 +1,9 @@
 // ./controller/adminController.js
 const express = require("express");
-const router = express.Router();
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 
 // Add a route to handle delete requests
-router.post("/admin/delete/:id", async (req, res) => {
+const adminDeleteData = async (req, res) => {
   try {
     await ShortUrl.findByIdAndDelete(req.params.id);
     res.redirect("/admin");
@@ -12,15 +11,15 @@ router.post("/admin/delete/:id", async (req, res) => {
     console.error("Error deleting URL:", error);
     res.status(500).send("Error deleting URL");
   }
-});
+};
 
-router.post("/admin/reset", async (req, res) => {
+const adminResetData = async (req, res) => {
   await ShortUrl.deleteMany({});
   res.redirect("/admin");
-});
+};
 
 // Route to handle update operation
-router.post("/admin/update/:id", async (req, res) => {
+const adminUpdateData = async (req, res) => {
   const { id } = req.params;
   const { fullUrl, shortUrl, clicks } = req.body;
 
@@ -42,10 +41,10 @@ router.post("/admin/update/:id", async (req, res) => {
     console.error(error);
     res.status(500).send("Error updating URL");
   }
-});
+};
 
 // Example logout route handler
-router.post("/admin/logout", (req, res) => {
+const adminLogout = (req, res) => {
   // Perform logout procedure
   // For example, clear session or authentication tokens
   req.session.destroy((err) => {
@@ -56,6 +55,6 @@ router.post("/admin/logout", (req, res) => {
       res.redirect("/");
     }
   });
-});
+};
 
-module.exports = router;
+module.exports = { adminDeleteData, adminResetData, adminUpdateData, adminLogout };

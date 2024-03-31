@@ -38,10 +38,9 @@ app.use(expressLayouts);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// routes for authentication
-const authController = require("./controller/authController");
-const adminController = require("./controller/adminController");
-const shortUrlController = require("./controller/shortUrlController");
+const authRoutes = require("./routes/authRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const shortUrlRoutes = require("./routes/shortUrlRoutes");
 
 // Render the index page
 app.get("/", async (req, res) => {
@@ -49,11 +48,11 @@ app.get("/", async (req, res) => {
   res.render("index", { layout: "layouts/main-layout", title: "Snipify", showShortenedLink: false, shortUrls: shortUrls });
 });
 
-app.use("/", authController);
+app.use("/", authRoutes);
 
-app.use("/", adminController);
+app.use("/", adminRoutes);
 
-app.use("/", shortUrlController);
+app.use("/", shortUrlRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/`);
