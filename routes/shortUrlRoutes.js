@@ -4,6 +4,6 @@ const { shortenUrl, getShortenedUrl } = require("../controller/shortUrlControlle
 
 router.post("/shortUrl", shortenUrl);
 
-router.get(":shortUrl", getShortenedUrl);
+router.get("/:shortUrl", getShortenedUrl);
 
 module.exports = router;
