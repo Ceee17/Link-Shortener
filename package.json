@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.18.3",
     "express-ejs-layouts": "^2.5.1",
@@ -23,6 +22,7 @@
     "shortid": "^2.2.16"
   },
   "devDependencies": {
+    "dotenv": "^16.4.5",
     "nodemon": "^3.1.0"
   }
 }
