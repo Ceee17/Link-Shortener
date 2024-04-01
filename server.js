@@ -33,6 +33,7 @@ app.use(passport.session());
 require("./passport-config");
 
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.use(expressLayouts);
 // app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: false }));
