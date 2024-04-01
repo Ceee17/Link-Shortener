@@ -57,16 +57,5 @@ const getAdminViews = async (req, res) => {
   const shortUrls = await ShortUrl.find();
   res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
 };
-// Route to display users section in admin page
-const getAdminUsersViews = async (req, res) => {
-  try {
-    // Fetch all users from the database
-    const users = await User.find();
-    res.render("show-users", { layout: "layouts/admin-layout", title: "Admin Section", users: users }); // Pass the users data to the template
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).send("Error fetching users");
-  }
-};
 
-module.exports = { getUserViews, getAdminLoginViews, adminLoginSubmit, getAdminCreateAccountViews, adminCreateAccount, getAdminViews, getAdminUsersViews };
+module.exports = { getUserViews, getAdminLoginViews, adminLoginSubmit, getAdminCreateAccountViews, adminCreateAccount, getAdminViews };
