@@ -27,6 +27,11 @@ const shortUrlSchema = new mongoose.Schema({
   },
 
   createdBy: { type: String, default: "guest" },
+  dateAdded: {
+    type: Date,
+    default: Date.now, // Automatically generate the current timestamp
+    immutable: true, // Ensure the field is immutable once set
+  },
 });
 
 module.exports = mongoose.model("ShortUrl", shortUrlSchema);

@@ -1,0 +1,38 @@
+<table id="tableBody" class="table-auto w-full border-collapse border border-blue-800">
+  <thead class="bg-blue-500 text-white">
+    <tr>
+      <!-- ./views/admin.ejs -->
+
+      <!-- Add links/buttons for sorting -->
+      <th class="px-4 py-2">Full URL</th>
+      <th class="px-4 py-2">Short URL</th>
+      <th class="px-4 py-2">Clicks</th>
+      <th class="px-4 py-2">Description</th>
+      <th class="px-4 py-2">Created By</th>
+      <th class="px-4 py-2">Date Added</th>
+
+      <th class="px-4 py-2">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% shortUrls.forEach(shortUrl => { %>
+    <tr>
+      <td class="border px-4 py-2"><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
+      <td class="border px-4 py-2"><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
+      <td class="border px-4 py-2"><%= shortUrl.clicks %></td>
+      <td class="border px-4 py-2"><%= shortUrl.description %></td>
+      <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
+      <td class="border px-4 py-2"><%= shortUrl.dateAdded %></td>
+      <td class="border px-4 py-2">
+        <!-- Add buttons for CRUD operations -->
+        <button id="updateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded update-button" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
+
+        <!-- Add form for delete button -->
+        <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="inline">
+          <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>

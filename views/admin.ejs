@@ -4,39 +4,27 @@
 <!-- content -->
 <main class="flex-1 container ml-72 mr-10 my-10">
   <h1 class="text-center my-4 font-bold text-4xl">HISTORY</h1>
+  <div class="flex justify-between items-center my-auto">
+    <!-- Sorting dropdown -->
+    <div class="flex justify-start mb-4">
+      <label for="sortDropdown" class="mr-2">Sort by:</label>
+      <select id="sortDropdown">
+        <option value="dateAdded">Date Added</option>
+        <option value="clicks">Clicks</option>
+        <!-- Add more options for other sorting criteria if needed -->
+      </select>
+    </div>
+    <!-- Search form -->
+    <form action="/admin/search" method="GET" class="mb-4">
+      <div class="flex justify-end">
+        <input type="text" name="query" placeholder="Search" class="p-2 rounded border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Search</button>
+      </div>
+    </form>
+  </div>
 
-  <table class="table-auto w-full border-collapse border border-blue-800">
-    <thead class="bg-blue-500 text-white">
-      <tr>
-        <th class="px-4 py-2">Full URL</th>
-        <th class="px-4 py-2">Short URL</th>
-        <th class="px-4 py-2">Clicks</th>
-        <th class="px-4 py-2">Description</th>
-        <th class="px-4 py-2">Created By</th>
-        <th class="px-4 py-2">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% shortUrls.forEach(shortUrl => { %>
-      <tr>
-        <td class="border px-4 py-2"><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
-        <td class="border px-4 py-2"><a href="<%= shortUrl.short %>"><%= shortUrl.short %></a></td>
-        <td class="border px-4 py-2"><%= shortUrl.clicks %></td>
-        <td class="border px-4 py-2"><%= shortUrl.description %></td>
-        <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
-        <td class="border px-4 py-2">
-          <!-- Add buttons for CRUD operations -->
-          <button id="updateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded update-button" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
+  <%- include('layouts/table-body.ejs') %>
 
-          <!-- Add form for delete button -->
-          <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="inline">
-            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
-          </form>
-        </td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
   <form action="/admin/reset" method="POST" class="mt-4">
     <div class="flex justify-end">
       <!-- Add a Reset button -->
@@ -94,14 +82,45 @@
     return document.getElementById("my_modal_3").open;
   }
 
+  function isSortingActive() {
+    // Check if the sorting dropdown is open or if a sorting action is in progress
+    return $("#sortDropdown").hasClass("open") || $("#sortDropdown").is(":focus");
+  }
+
+  function isSearchActive() {
+    // Check if the search input field is focused or if a search action is in progress
+    return $("[name='query']").is(":focus") || $("[name='query']").val().trim() !== "";
+  }
+
   function updateShortId(id) {
     document.getElementById("updateForm").action = "/admin/update/" + id; // Update form action
     my_modal_3.showModal(); // Show the modal
   }
-  // Refresh the page every 5 seconds if the modal is not open
+  // Refresh the page every 5 seconds if the modal is not open and no sorting or search action is active
   setInterval(function () {
-    if (!isModalOpen()) {
+    if (!isModalOpen() && !isSortingActive() && !isSearchActive()) {
       window.location.reload();
     }
   }, 5000); // Refresh every 5 seconds (5000 milliseconds)
+
+  // sorting
+  $(document).ready(function () {
+    $("#sortDropdown").change(function () {
+      var sortBy = $(this).val(); // Get the selected value from the dropdown
+
+      $.ajax({
+        url: "/admin/sort",
+        type: "GET",
+        data: { sortBy: sortBy }, // Pass the selected sorting criteria to the server
+        success: function (response) {
+          // Update the table with the sorted data returned from the server
+          $("#tableBody").html(response);
+        },
+        error: function (xhr, status, error) {
+          // Handle errors if any
+          console.error(error);
+        },
+      });
+    });
+  });
 </script>

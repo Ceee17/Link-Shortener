@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { adminDeleteData, adminResetData, adminUpdateData, adminLogout } = require("../controller/adminController");
+const { adminSortData, adminSearchData, adminDeleteData, adminResetData, adminUpdateData, adminLogout } = require("../controller/adminController");
 
+router.get("/admin/sort/", adminSortData);
+router.get("/admin/search", adminSearchData);
 router.post("/admin/delete/:id", adminDeleteData);
 router.post("/admin/reset", adminResetData);
 router.post("/admin/update/:id", adminUpdateData);

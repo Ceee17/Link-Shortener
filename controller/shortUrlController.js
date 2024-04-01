@@ -19,10 +19,10 @@ const shortenUrl = async (req, res) => {
     if (existingShortUrl) {
       return res.status(400).send("Custom short ID already exists");
     }
-    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: customShortId });
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: customShortId, createdBy: createdBy, dateAdded: Date.now() });
   } else {
     const generatedShortId = shortId.generate();
-    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, createdBy: createdBy });
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, createdBy: createdBy, dateAdded: Date.now() });
   }
 
   res.render("index", { layout: "layouts/main-layout", title: "Snipify", showShortenedLink: true, shortUrls: [shortUrl] });
