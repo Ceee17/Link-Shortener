@@ -1,8 +1,8 @@
 <div class="container mx-auto flex justify-center items-center border-secondary-3 rounded my-5 p-5">
-  <div class="flex justify-center items-start flex-col px-[390px] py-[190px] bg-[#8DA9C4] rounded-[30px] opacity-65">
-    <h1 class="text-left mb-4 font-bold text-white text-[32px]">Shorten, Share, Simplify!</h1>
-    <div class="container mx-auto flex justify-between items-center">
-      <a href="/" class="text-white text-lg font-bold flex items-center"> <i class="fas fa-scissors mr-1"></i> Snipify </a>
+  <div class="flex relative justify-center items-start flex-col py-[150px] px-[500px] bg-[#8DA9C4] rounded-[30px] opacity-65">
+    <h1 class=" mb-4 font-regular text-white text-md absolute top-2 left-5">Shorten, Share, Simplify! Shorten, Share, Simplify!+</h1>
+    <div class="container justify-between items-center">
+      <a href="/" class="text-white text-lg font-bold items-center"> <i class="fas fa-scissors mr-1"></i> Snipify </a>
       <div class="dropdown dropdown-hover">
         <div tabindex="0" role="button" class="btn">Login / Register</div>
         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-60">
@@ -14,7 +14,7 @@
     <form action="/shortUrl" method="POST" class="flex flex-col items-center">
       <div class="mb-4">
         <label for="fullUrl" class="font-semibold">Input URL</label>
-        <div class="flex items-center">
+        <div class="items-center">
           <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3" />
           <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Shrink</button>
         </div>
