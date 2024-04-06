@@ -13,8 +13,6 @@ const port = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGODB_URI, {
   bufferCommands: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 });
 
 // Initialize express session and flash

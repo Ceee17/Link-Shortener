@@ -6,7 +6,10 @@
 <main class="flex-1 container ml-72 mr-10 my-10">
   <h1 class="text-center my-4 font-bold text-4xl">Customize Section</h1>
 
-  <h3>About Us</h3>
-  <p><%= AboutUs.content %></p>
+  <!-- Form for customizing content -->
+  <form action="/admin/customize" method="POST">
+    <textarea name="customizeContent"></textarea>
+    <button type="submit" class="btn btn-primary">Save Customization</button>
+  </form>
 </main>
 <!-- end of content -->
