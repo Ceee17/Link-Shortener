@@ -2,11 +2,13 @@
 const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
+const flash = require("express-flash");
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const User = require("../models/user");
 
 const getUserViews = (req, res) => {
-  res.send("ok");
+  const username = req.params.username;
+  res.render("dashboard", { layout: false, username: username });
 };
 
 const getAdminLoginViews = (req, res) => {

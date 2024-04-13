@@ -1,6 +1,7 @@
 // ./passport-config.js
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./models/user");
 const bcrypt = require("bcrypt");
 
@@ -20,6 +21,35 @@ passport.use(
       return done(err);
     }
   })
+);
+
+// Google Strategy
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:5000/auth/google/callback",
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      try {
+        let user = await User.findOne({ googleId: profile.id });
+
+        if (!user) {
+          // Create new user if not found
+          user = new User({
+            googleId: profile.id,
+            username: profile.displayName, // Use display name as username, adjust accordingly
+          });
+          await user.save();
+        }
+
+        done(null, user);
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
 );
 
 passport.serializeUser((user, done) => {
