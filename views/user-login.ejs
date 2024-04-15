@@ -1,0 +1,13 @@
+<form action="/user/login/submit" method="post">
+  <% if (messages.error) { %>
+  <div class="error-message"><%= messages.error %></div>
+  <% } %> <% if (messages.success) { %>
+  <div class="success-message"><%= messages.success %></div>
+  <% } %>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" />
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" />
+  <!-- Ensure the name attribute is added for the password input -->
+  <button type="submit">Login</button>
+</form>

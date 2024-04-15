@@ -42,6 +42,7 @@ const ensureAboutUsExists = require("./middleware/ensureAboutUsExists");
 app.use(ensureAboutUsExists);
 
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const adminUsersRoutes = require("./routes/adminUsersRoutes");
 const adminCustomizeRoutes = require("./routes/adminCustomizeRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -62,7 +63,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/", authRoutes);
-
+app.use("/", userRoutes);
 app.use("/", adminUsersRoutes);
 app.use("/", adminCustomizeRoutes);
 
