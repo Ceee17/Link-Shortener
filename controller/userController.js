@@ -1,9 +1,5 @@
 const fetch = require("node-fetch");
 // Route for logging out
-
-
-
-
 // Disini kita pakai revoke url karna alasan keamanan,
 // untuk menjamin keamanan token user, maka harus direvoke dulu
 userLogout = async (req, res) => {
