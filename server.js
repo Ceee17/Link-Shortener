@@ -24,10 +24,9 @@ app.use(
   })
 );
 
-app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 require("./passport-config");
 
@@ -37,7 +36,13 @@ app.use(expressLayouts);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Require the middleware
+const ensureAboutUsExists = require("./middleware/ensureAboutUsExists");
+// middleware utk mastiin aboutus content itu ada, kalo gada create dlu nilai defaultnya
+app.use(ensureAboutUsExists);
+
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const adminUsersRoutes = require("./routes/adminUsersRoutes");
 const adminCustomizeRoutes = require("./routes/adminCustomizeRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -45,13 +50,20 @@ const shortUrlRoutes = require("./routes/shortUrlRoutes");
 
 // Render the index page
 app.get("/", async (req, res) => {
-  const shortUrls = await ShortUrl.find();
+  try {
+    const aboutUs = await AboutUs.findOne();
+    const shortUrls = await ShortUrl.find();
 
-  res.render("index", { layout: "layouts/main-layout", title: "Snipify", showShortenedLink: false, shortUrls: shortUrls });
+    res.render("index", { layout: "layouts/main-layout", title: "Snipify", aboutUsContent: aboutUs.content, showShortenedLink: false, shortUrls: shortUrls });
+  } catch (error) {
+    console.error("Error fetching About Us content:", error);
+    // Handle errors appropriately
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.use("/", authRoutes);
-
+app.use("/", userRoutes);
 app.use("/", adminUsersRoutes);
 app.use("/", adminCustomizeRoutes);
 

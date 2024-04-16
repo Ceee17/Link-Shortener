@@ -1,15 +1,57 @@
-<!-- views/admin/users.ejs -->
-
 <%- include('layouts/sidebar.ejs') %>
 
 <!-- content -->
 <main class="flex-1 container ml-72 mr-10 my-10">
   <h1 class="text-center my-4 font-bold text-4xl">Customize Section</h1>
 
-  <!-- Form for customizing content -->
-  <form action="/admin/customize" method="POST">
-    <textarea name="customizeContent"></textarea>
-    <button type="submit" class="btn btn-primary">Save Customization</button>
+  <h2>Edit About Us Description</h2>
+
+  <% if (aboutUs) { %>
+  <form id="updateAboutUsForm" action="/admin/customize/update" method="POST">
+    <textarea name="content" id="content" rows="5" cols="50"><%= aboutUs.content %></textarea>
+    <button type="submit">Save</button>
   </form>
+  <% } else { %>
+  <p>No About Us description found.</p>
+  <% } %>
 </main>
 <!-- end of content -->
+
+<!-- Add SweetAlert CDN -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!-- Your JavaScript content -->
+<script>
+  // Function to handle the form submission
+  const updateAboutUs = async () => {
+    const content = document.getElementById("content").value;
+
+    try {
+      const response = await fetch("/admin/customize/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      if (response.ok) {
+        // Show SweetAlert popup on success
+        swal("Success", "About Us description updated successfully", "success");
+      } else {
+        // Show SweetAlert popup on error
+        swal("Error", "An error occurred", "error");
+      }
+    } catch (error) {
+      console.error("Error updating About Us description:", error);
+      // Show SweetAlert popup on error
+      swal("Error", "An error occurred", "error");
+    }
+  };
+
+  // Add event listener to the form submission
+  document.getElementById("updateAboutUsForm").addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    updateAboutUs(); // Call the updateAboutUs function
+  });
+</script>

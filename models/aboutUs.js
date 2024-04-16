@@ -1,4 +1,4 @@
-// models/user.js
+// models/aboutus.js
 const mongoose = require("mongoose");
 
 const aboutUsSchema = new mongoose.Schema({
