@@ -56,7 +56,7 @@ const getUserLoginViews = (req, res) => {
 
 const getUserViews = (req, res) => {
   const username = req.params.username;
-  res.render("dashboard", { layout: false, username: username });
+  res.render("dashboard", { layout: "layouts/admin-layout", title: "User Dashboard", username: username });
 };
 
 const getAdminLoginViews = (req, res) => {
@@ -104,8 +104,13 @@ const adminCreateAccount = async (req, res) => {
 };
 
 const getAdminViews = async (req, res) => {
-  const shortUrls = await ShortUrl.find();
-  res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
+  try {
+    const shortUrls = await ShortUrl.find();
+    res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
+  } catch (error) {
+    console.error("Error fetching short URLs:", error);
+    res.status(500).send("Error fetching short URLs");
+  }
 };
 
 module.exports = {
