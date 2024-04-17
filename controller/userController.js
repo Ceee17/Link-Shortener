@@ -1,5 +1,36 @@
 const fetch = require("node-fetch");
-// Route for logging out
+const ShortUrl = require("../models/shortUrl");
+const shortId = require("shortid");
+
+// Server-side handling (shortenUrlUser controller function)
+const shortenUrlUser = async (req, res) => {
+  let createdBy;
+  // const aboutUs = await AboutUs.findOne();
+  const description = req.body.description;
+
+  if (req.user) {
+    createdBy = req.user.username;
+  }
+
+  //TODO buat input field di frontend nya
+  const customShortId = req.body.customShortId; // Assuming you have a form field for custom short ID
+  let shortUrl;
+
+  if (customShortId) {
+    const existingShortUrl = await ShortUrl.findOne({ short: customShortId });
+    if (existingShortUrl) {
+      return res.status(400).json({ message: "Custom URL already exists." });
+    }
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: customShortId, description: description, createdBy: createdBy, dateAdded: Date.now() });
+  } else {
+    const generatedShortId = shortId.generate();
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, description: description, createdBy: createdBy, dateAdded: Date.now() });
+  }
+
+  // Send response with inserted data
+  res.status(201).json({ message: "Short URL created successfully", shortUrl });
+};
+
 // Disini kita pakai revoke url karna alasan keamanan,
 // untuk menjamin keamanan token user, maka harus direvoke dulu
 userLogout = async (req, res) => {
@@ -36,4 +67,4 @@ userLogout = async (req, res) => {
   });
 };
 
-module.exports = { userLogout };
+module.exports = { shortenUrlUser, userLogout };

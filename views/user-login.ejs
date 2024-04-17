@@ -1,9 +1,4 @@
 <form action="/user/login/submit" method="post">
-  <% if (messages.error) { %>
-  <div class="error-message"><%= messages.error %></div>
-  <% } %> <% if (messages.success) { %>
-  <div class="success-message"><%= messages.success %></div>
-  <% } %>
   <label for="username">Username:</label>
   <input type="text" id="username" name="username" />
   <label for="password">Password:</label>
@@ -11,3 +6,13 @@
   <!-- Ensure the name attribute is added for the password input -->
   <button type="submit">Login</button>
 </form>
+
+<h3>--- OR ---</h3>
+<form action="/auth/google">
+  <button class="btn">
+    Login with Google!
+    <i class="fa-brands fa-google"></i>
+  </button>
+</form>
+
+<p>Dont have account? <a href="/user/create-account">Create account here</a></p>

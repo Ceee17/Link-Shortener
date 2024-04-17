@@ -7,12 +7,14 @@ const shortId = require("shortid");
 const shortenUrl = async (req, res) => {
   let createdBy;
   const aboutUs = await AboutUs.findOne();
+  const description = req.body.description;
 
   if (req.user) {
     createdBy = req.user.username;
   }
 
-  //TODO buat input field di frontend nya
+  // TODO buat input field di frontend nya
+
   const customShortId = req.body.customShortId; // Assuming you have a form field for custom short ID
   let shortUrl;
 
@@ -21,10 +23,10 @@ const shortenUrl = async (req, res) => {
     if (existingShortUrl) {
       return res.status(400).send("Custom short ID already exists");
     }
-    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: customShortId, createdBy: createdBy, dateAdded: Date.now() });
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: customShortId, description: description, createdBy: createdBy, dateAdded: Date.now() });
   } else {
     const generatedShortId = shortId.generate();
-    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, createdBy: createdBy, dateAdded: Date.now() });
+    shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, description: description, createdBy: createdBy, dateAdded: Date.now() });
   }
 
   res.render("index", { layout: "layouts/main-layout", title: "Snipify", aboutUsContent: aboutUs.content, showShortenedLink: true, shortUrls: [shortUrl] });

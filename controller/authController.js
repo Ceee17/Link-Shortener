@@ -2,9 +2,16 @@
 const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
-const flash = require("express-flash");
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const User = require("../models/user");
+
+const getGoogleOAuth = passport.authenticate("google", { scope: ["profile"] });
+
+const getGoogleCallback = (req, res) => {
+  const username = req.user.username;
+  // Redirect user after successful authentication
+  res.redirect(`/${username}/dashboard`);
+};
 
 const userCreateAccount = async (req, res) => {
   const { username, password } = req.body;
@@ -28,7 +35,7 @@ const userCreateAccount = async (req, res) => {
 
     // Save the new user to the database
     await newUser.save();
-    res.status(201).send("User account created successfully");
+    res.redirect("/user/login");
   } catch (error) {
     console.error("Error creating user account:", error);
     res.status(500).send("Error creating user account");
@@ -40,10 +47,7 @@ const getUserCreateAccountViews = (req, res) => {
 };
 
 const userLoginSubmit = passport.authenticate("local", {
-  successRedirect: "/user/dashboard",
   failureRedirect: "/user/login",
-  failureFlash: true,
-  successFlash: "Login successful!",
 });
 
 const getUserLoginViews = (req, res) => {
@@ -52,7 +56,7 @@ const getUserLoginViews = (req, res) => {
 
 const getUserViews = (req, res) => {
   const username = req.params.username;
-  res.render("dashboard", { layout: false, username: username });
+  res.render("dashboard", { layout: "layouts/admin-layout", title: "User Dashboard", username: username });
 };
 
 const getAdminLoginViews = (req, res) => {
@@ -100,8 +104,26 @@ const adminCreateAccount = async (req, res) => {
 };
 
 const getAdminViews = async (req, res) => {
-  const shortUrls = await ShortUrl.find();
-  res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
+  try {
+    const shortUrls = await ShortUrl.find();
+    res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
+  } catch (error) {
+    console.error("Error fetching short URLs:", error);
+    res.status(500).send("Error fetching short URLs");
+  }
 };
 
-module.exports = { userLoginSubmit, getUserLoginViews, getUserViews, getAdminLoginViews, adminLoginSubmit, getAdminCreateAccountViews, adminCreateAccount, getAdminViews };
+module.exports = {
+  getGoogleOAuth,
+  getGoogleCallback,
+  userCreateAccount,
+  getUserCreateAccountViews,
+  userLoginSubmit,
+  getUserLoginViews,
+  getUserViews,
+  getAdminLoginViews,
+  adminLoginSubmit,
+  getAdminCreateAccountViews,
+  adminCreateAccount,
+  getAdminViews,
+};

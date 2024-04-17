@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const { userLogout } = require("../controller/userController");
+const { userLogout, shortenUrlUser } = require("../controller/userController");
 
-router.get("/user/logout", userLogout);
+router.post("/:username/dashboard/shorturl", shortenUrlUser);
+router.post("/user/logout", userLogout);
 
 module.exports = router;
