@@ -13,7 +13,8 @@ const shortenUrl = async (req, res) => {
     createdBy = req.user.username;
   }
 
-  //TODO buat input field di frontend nya
+  // TODO buat input field di frontend nya
+
   const customShortId = req.body.customShortId; // Assuming you have a form field for custom short ID
   let shortUrl;
 

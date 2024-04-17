@@ -23,26 +23,85 @@
 
 <!-- Main Content -->
 <div class="hero min-h-screen">
-  <form action="/shortUrl" method="POST" class="flex flex-col items-center">
-    <input type="hidden" id="username" name="username" value="<%= username %>" />
+  <!-- <form action="/<%= username %>/dashboard/shorturl" method="POST" class="flex flex-col items-center"> -->
+  <input type="hidden" id="username" name="username" value="<%= username %>" />
 
-    <div class="mb-4">
-      <div class="wrapper">
-        <label for="description">Description</label>
-        <input type="text" placeholder="Description" id="description" name="description" />
-      </div>
-      <div class="wrapper">
-        <label for="fullUrl" class="font-semibold">Input URL</label>
-        <div class="flex items-center">
-          <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3" />
-        </div>
-      </div>
-      <div class="wrapper">
-        <label for="customShortId">Custom Short ID:</label><br />
-        <input type="text" id="customShortId" name="customShortId" />
-      </div>
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Shrink</button>
+  <div class="mb-4">
+    <div class="wrapper">
+      <label for="description">Description</label>
+      <input type="text" placeholder="Description" id="description" name="description" />
     </div>
-  </form>
+    <div class="wrapper">
+      <label for="fullUrl" class="font-semibold">Input URL</label>
+      <div class="flex items-center">
+        <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3" />
+      </div>
+    </div>
+    <div class="wrapper">
+      <label for="customShortId">Custom Short ID:</label><br />
+      <input type="text" id="customShortId" name="customShortId" />
+    </div>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="openModalBtn">Shrink</button>
+  </div>
+  <!-- </form> -->
 </div>
 <!-- end of Main Content -->
+
+<!-- start Modal box -->
+
+<dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Data</h3>
+    <div id="modal-content"></div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+<!-- end of Modal box -->
+<script>
+  // Function to fetch data and populate modal box
+  async function fetchDataAndPopulateModal() {
+    try {
+      // Make an asynchronous request to fetch data from the server
+      const response = await fetch(`/<%= username %>/dashboard/shorturl`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Include any necessary data for the request
+          // For example, you might want to send the full URL and description
+          username: document.getElementById("username").value,
+          description: document.getElementById("description").value,
+          fullUrl: document.getElementById("fullUrl").value,
+          customShortId: document.getElementById("customShortId").value,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      console.log(data);
+      if (data.error) {
+        const modalContent = document.getElementById("modal-content");
+        modalContent.textContent = data.error;
+      } else {
+        const modalContent = document.getElementById("modal-content");
+        modalContent.innerHTML = JSON.stringify(data);
+      }
+
+      // Display the modal box
+      const modal = document.getElementById("my_modal_5");
+      modal.showModal();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  // Event listener for button click to trigger modal box
+  const openModalButton = document.getElementById("openModalBtn");
+  openModalButton.addEventListener("click", fetchDataAndPopulateModal);
+</script>

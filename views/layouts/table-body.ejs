@@ -31,8 +31,36 @@
         <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="inline">
           <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
         </form>
+        <button class="btn bg-green-700" onclick="viewQR('<%= shortUrl.short %>')">View QR</button>
       </td>
     </tr>
     <% }) %>
   </tbody>
 </table>
+
+<!-- start modal box for QR -->
+<!-- Open the modal using ID.showModal() method -->
+<dialog id="my_modal_2" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Scan Me!</h3>
+    <img id="qrCodeImage" src="" alt="QR CODE" />
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+<!-- end of modal box for QR -->
+
+<!-- JavaScript to handle modal and QR code generation -->
+<script>
+  // Function to open modal and generate QR code
+  function viewQR(shortUrl) {
+    // Open the modal
+    var modal = document.getElementById("my_modal_2");
+
+    // Generate QR code image source based on short URL
+    var qrUrl = "http://api.qrserver.com/v1/create-qr-code/?data=http://localhost:5000/" + shortUrl + "&size=300x300";
+    document.getElementById("qrCodeImage").src = qrUrl;
+    modal.showModal();
+  }
+</script>

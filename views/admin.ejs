@@ -79,7 +79,7 @@
 <script>
   // Function to check if the modal is open
   function isModalOpen() {
-    return document.getElementById("my_modal_3").open;
+    return document.getElementById("my_modal_3").open || document.getElementById("my_modal_2").open;
   }
 
   function isSortingActive() {
