@@ -1,13 +1,13 @@
-<form action="/admin/login/submit" method="post">
-  <% if (messages.error) { %>
-  <div class="error-message"><%= messages.error %></div>
-  <% } %> <% if (messages.success) { %>
-  <div class="success-message"><%= messages.success %></div>
-  <% } %>
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" />
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" />
-  <!-- Ensure the name attribute is added for the password input -->
-  <button type="submit">Login</button>
+<h1 class="font-bold text-[70px] text-black mb-5">Admin Login</h1>
+
+<form action="/admin/login/submit" method="post" class="flex flex-col mt-4 gap-6 items-center">
+  <label for="username" class="input input-bordered flex items-center gap-2 h-[60px] w-[320px] bg-[#D9D9D9] text-black">
+    <i class="fa-solid fa-user fa-lg"></i>
+    <input type="text" id="username" name="username" placeholder="Username" class="grow bg-[#D9D9D9] text-black" />
+  </label>
+  <label for="password" class="input input-bordered flex items-center gap-2 h-[60px] w-[320px] bg-[#D9D9D9] text-black">
+    <i class="fa-solid fa-key fa-lg"></i>
+    <input type="password" id="password" name="password" placeholder="Password" class="grow bg-[#D9D9D9] text-black" />
+  </label>
+  <button type="submit" class="btn bg-[#4F4789] w-[200px] text-xl font-bold text-white rounded-badge mt-[8%]">Login</button>
 </form>

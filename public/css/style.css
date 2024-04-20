@@ -1,5 +1,0 @@
-/* // /Projects/views/css/index.css */
-/* Show the drawer when hovering over the relative parent */
-.relative:hover .hidden {
-  display: block;
-}

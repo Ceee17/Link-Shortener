@@ -1,47 +1,35 @@
-<!-- Sidebar -->
-<aside class="h-screen flex gap-5 bg-gray-800 fixed z-10 left-0 top-0 text-white w-64">
-  <div class="p-4">
-    <h1 class="text-xl font-bold flex-start">
-      <a href="#" class="text-white text-lg font-bold flex items-center"> <i class="fas fa-scissors mr-1"></i> Snipify </a>
-    </h1>
-    <ul class="mt-4">
-      <li class="py-2 px-8 hover:bg-gray-700">
-        <a href="#" class="flex items-center gap-3 text-xl text-bold"><img src="/assets/dashboard-logo.png" alt="" class="w-[30px] h-auto" /> Dashboard</a>
-      </li>
-      <li class="py-2 px-8 hover:bg-gray-700">
-        <a href="#" class="flex items-center gap-3 text-xl text-bold"><img src="/assets/history-logo.png" alt="" class="w-[30px] h-auto" /> History</a>
-      </li>
-    </ul>
-    <div class="p-4">
-      <form action="/user/logout" method="POST">
-        <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">Logout</button>
-      </form>
-    </div>
-  </div>
-</aside>
-<!-- end of sidebar -->
-
 <!-- Main Content -->
-<div class="hero min-h-screen">
+
+<div class="ml-[60%]">
   <!-- <form action="/<%= username %>/dashboard/shorturl" method="POST" class="flex flex-col items-center"> -->
   <input type="hidden" id="username" name="username" value="<%= username %>" />
 
-  <div class="mb-4">
-    <div class="wrapper">
-      <label for="description">Description</label>
-      <input type="text" placeholder="Description" id="description" name="description" />
+  <div class="">
+    <div class="wrapper flex flex-col">
+      <label for="description" class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class="label-text text-black text-xl">Description (optional)</span>
+        </div>
+        <input type="text" placeholder="Link for Instagram" id="description" name="description" class="input input-bordered w-[400px] max-w-xs bg-[#D9D9D9] text-black" />
+      </label>
     </div>
-    <div class="wrapper">
-      <label for="fullUrl" class="font-semibold">Input URL</label>
-      <div class="flex items-center">
-        <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3" />
-      </div>
+    <div class="wrapper flex flex-col">
+      <label for="fullUrl" class="form-controler w-full max-w-xs">
+        <div class="label">
+          <span class="label-text text-black text-xl">Input Url</span>
+        </div>
+        <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="input input-bordered w-[400px] max-w-xs bg-[#D9D9D9] text-black" />
+      </label>
     </div>
-    <div class="wrapper">
-      <label for="customShortId">Custom Short ID:</label><br />
-      <input type="text" id="customShortId" name="customShortId" />
+    <div class="wrapper flex flex-col">
+      <label for="customShortId" class="form-controler w-full max-w-xs">
+        <div class="label">
+          <span class="label-text text-black text-xl">Customize Your Link (optional)</span>
+        </div>
+        <input type="text" id="customShortId" name="customShortId" placeholder="IG" class="input input-bordered w-[400px] max-w-xs bg-[#D9D9D9] text-black" />
+      </label>
     </div>
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="openModalBtn">Shrink</button>
+    <button type="submit" class="btn bg-[#4F4789] text-white font-bold text-xl mt-5 py-2 px-4 w-[134px] h-[55px] rounded-badge" id="openModalBtn">Shrink</button>
   </div>
   <!-- </form> -->
 </div>
@@ -51,20 +39,49 @@
 
 <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
   <div class="modal-box w-7/12 max-w-4xl">
-    <h3 class="font-bold text-lg">Data</h3>
-    <div id="modal-content"></div>
+    <h3 class="font-bold text-lg text-center">Data</h3>
+    <div id="modal-content" class="flex gap-2 justify-around mx-3 items-center">
+      <div class="col-1 flex flex-col items-start">
+        <p>Message: <span id="modal-message"></span></p>
+        <p>Full URL: <span id="modal-fullUrl"></span></p>
+        <p>Short URL: <span id="modal-shortUrl"></span></p>
+        <p>Clicks: <span id="modal-clicks"></span></p>
+        <p>Description: <span id="modal-description"></span></p>
+        <p>Created By: <span id="modal-createdBy"></span></p>
+        <p>Date Added: <span id="modal-dateAdded"></span></p>
+      </div>
+      <div class="col-2">
+        <img src="" alt="QR CODE" id="modal-qr" />
+        <p class="text-center font-semibold text-xl">Scan Me!</p>
+      </div>
+    </div>
     <div class="modal-action">
       <form method="dialog">
-        <button class="btn">Close</button>
+        <button class="btn rounded-badge w-[150px] mr-5">Close</button>
       </form>
     </div>
   </div>
 </dialog>
 <!-- end of Modal box -->
 <script>
+  // Function to validate URL format
+  function isValidUrl(url) {
+    // Regular expression for URL format validation
+    const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})(\/[^\s]*)?$/i;
+    return urlRegex.test(url);
+  }
   // Function to fetch data and populate modal box
   async function fetchDataAndPopulateModal() {
     try {
+      const fullUrl = document.getElementById("fullUrl").value;
+
+      // Check if the input URL is valid
+      if (!isValidUrl(fullUrl)) {
+        // If URL is invalid, display an alert and return
+        alert("Please enter a valid URL.");
+        return;
+      }
+
       // Make an asynchronous request to fetch data from the server
       const response = await fetch(`/<%= username %>/dashboard/shorturl`, {
         method: "POST",
@@ -76,7 +93,7 @@
           // For example, you might want to send the full URL and description
           username: document.getElementById("username").value,
           description: document.getElementById("description").value,
-          fullUrl: document.getElementById("fullUrl").value,
+          fullUrl: fullUrl,
           customShortId: document.getElementById("customShortId").value,
         }),
       });
@@ -84,35 +101,29 @@
       const data = await response.json();
       console.log(data);
 
-      const modalContent = document.getElementById("modal-content");
-      modalContent.innerHTML = JSON.stringify(data);
-
-      // Display the modal box
-      const modal = document.getElementById("my_modal_5");
-      modal.showModal();
+      if (data.message === "Short URL created successfully") {
+        // Set data to modal content
+        document.getElementById("modal-message").innerText = data.message;
+        document.getElementById("modal-fullUrl").innerText = data.shortUrl.full;
+        document.getElementById("modal-shortUrl").innerText = data.shortUrl.short;
+        document.getElementById("modal-clicks").innerText = data.shortUrl.clicks;
+        document.getElementById("modal-description").innerText = data.shortUrl.description;
+        document.getElementById("modal-createdBy").innerText = data.shortUrl.createdBy;
+        document.getElementById("modal-dateAdded").innerText = new Date(data.shortUrl.dateAdded).toLocaleString();
+        // using qr code api
+        var qrUrl = "http://api.qrserver.com/v1/create-qr-code/?data=http://localhost:5000/" + data.shortUrl.short + "&size=200x200";
+        document.getElementById("modal-qr").src = qrUrl;
+        // Display the modal box
+        const modal = document.getElementById("my_modal_5");
+        modal.showModal();
+      } else {
+        // Handle error message
+        alert(data.message);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Make an asynchronous request to fetch data from the server
-      const response = await fetch(`/<%= username %>/dashboard/shorturl`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Include any necessary data for the request
-          // For example, you might want to send the full URL and description
-          username: document.getElementById("username").value,
-          description: document.getElementById("description").value,
-          fullUrl: document.getElementById("fullUrl").value,
-          customShortId: document.getElementById("customShortId").value,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      const modalContent = document.getElementById("modal-content");
-      modalContent.textContent = data.error;
+      // Handle other errors
+      alert("Failed to fetch data from the server.");
     }
   }
 

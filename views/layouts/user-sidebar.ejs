@@ -1,0 +1,22 @@
+<!-- Sidebar -->
+<aside class="h-full flex gap-5 bg-gray-800 fixed z-10 left-0 top-0 text-white w-64">
+  <div class="p-4">
+    <h1 class="text-xl font-bold flex-start">
+      <a href="#" class="text-white text-4xl font-bold flex items-center"> <i class="fas fa-scissors mr-1"></i> Snipify </a>
+    </h1>
+    <ul class="mt-4">
+      <li class="py-2 px-8 hover:bg-gray-700 h-[60px] flex items-center">
+        <a href="/<%= username %>/dashboard" class="flex items-center gap-3 text-2xl text-bold"><i class="fa-solid fa-table-columns fa-lg"></i> Dashboard</a>
+      </li>
+      <li class="py-2 px-8 hover:bg-gray-700 h-[60px] flex items-center">
+        <a href="/<%= username %>/history" class="flex items-center gap-3 text-2xl text-bold"><i class="fa-solid fa-link fa-lg"></i> History</a>
+      </li>
+    </ul>
+    <div class="p-4 relative">
+      <form action="/user/logout" method="POST" class="absolute bottom-[-680px] left-0">
+        <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-bold py-2 w-56 rounded-badge">Logout</button>
+      </form>
+    </div>
+  </div>
+</aside>
+<!-- end of sidebar -->

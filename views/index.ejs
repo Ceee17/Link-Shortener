@@ -1,23 +1,45 @@
 <!-- ./views/index.ejs -->
-<div class="container border border-secondary-3 rounded my-5 p-5">
-  <h1 class="text-center mb-4 mt-5 font-bold text-4xl">Shorten, Share, Simplify !</h1>
-  <!-- Content for the index page -->
-
-  <form action="/shortUrl" method="POST" class="flex flex-col items-center">
-    <div class="mb-4">
-      <label for="fullUrl" class="font-semibold">Input URL</label>
-      <div class="flex items-center">
-        <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3" />
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Shrink</button>
+<div class="hero min-h-screen" style="background-image: url('/assets/landingpage.png')">
+  <div class="flex justify-center items-center w-[80vw] h-[80vh] relative">
+    <img src="/assets/landingpagekotak.png" alt="background" class="h-full w-full" />
+    <img src="/assets/text-sss.png" alt="text" class="absolute top-5 left-5 w-[45%] h-[50%]" />
+    <div class="absolute top-10 right-12">
+      <div class="dropdown dropdown-hover dropdown-end">
+        <div tabindex="0" role="button" class="btn w-[180px] h-[58px] rounded-btn bg-[#201335] opacity-50"><span class="text-lg font-bold text-white">Login / Register</span></div>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-[#201335] rounded-box w-60">
+          <li><a href="/user/login" class="hover:bg-secondary-1 text-white">Login to User Hub</a></li>
+          <li><a href="/admin" class="hover:bg-secondary-1 text-white">Login to Admin Dashboard</a></li>
+        </ul>
       </div>
-      <!-- <label for="customShortId">Custom Short ID:</label><br />
-      <input type="text" id="customShortId" name="customShortId" /> -->
     </div>
-  </form>
+    <div id="content" class="flex justify-center items-center max-w-2xl mx-auto text-center text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <!-- <h1 class="text-center mb-4 mt-5 font-bold text-4xl">Shorten, Share, Simplify !</h1> -->
+      <!-- Content for the index page -->
 
-  <% if(showShortenedLink && shortUrls.length > 0) { %>
-  <div>
-    <h4 class="text-center">Your Shortened Link is <a href="<%= shortUrls[0].short %>" class="text-blue-500"><%= shortUrls[0].short %></a></h4>
+      <div class="wrapper-kiri flex items-center ml-[5%] mr-[30%]">
+        <img src="/assets/scissors.png" alt="" class="w-[120px] h-[120px]" />
+        <h1 class="font-bold text-[110px] text-black mb-4 ml-2">Snipify</h1>
+      </div>
+      <div class="wrapper-kanan">
+        <form action="/shortUrl" method="POST" id="shortenForm" class="flex flex-col items-center">
+          <div class="mb-4 flex flex-col gap-2">
+            <label for="fullUrl" class="font-semibold text-start text-xl">Input URL</label>
+            <div class="flex flex-col items-end justify-center gap-2">
+              <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3 bg-[#D9D9D9] text-black w-[500px]" />
+              <button type="submit" class="text-white font-bold py-2 px-6 rounded-badge text-xl mr-[2%] bg-[#4F4789] hover:border">Shrink</button>
+            </div>
+            <!-- <label for="customShortId">Custom Short ID:</label><br />
+              <input type="text" id="customShortId" name="customShortId" /> -->
+          </div>
+        </form>
+
+        <% if(showShortenedLink && shortUrls.length > 0) { %>
+        <div>
+          <h4 class="text-center">Your Shortened Link is <a href="<%= shortUrls[0].short %>" class="text-blue-500"><%= shortUrls[0].short %></a></h4>
+          <h4 class="text-center"><a href="/user/login" class="text-blue-500">Login now to unlock more feature!</a></h4>
+        </div>
+        <% } %>
+      </div>
+    </div>
   </div>
-  <% } %>
 </div>

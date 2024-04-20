@@ -12,29 +12,13 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- import Fontawesome icon -->
-
     <script src="https://kit.fontawesome.com/777c5149ce.js" crossorigin="anonymous"></script>
     <!-- Include custom CSS -->
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="/css/global.css" />
   </head>
-  <body class="bg-dark text-white">
-    <!-- Header -->
-    <nav class="bg-primary py-2">
-      <div class="container mx-auto flex justify-between items-center">
-        <a href="/" class="text-white text-lg font-bold flex items-center"> <i class="fas fa-scissors mr-1"></i> Snipify </a>
-        <!-- <a href="/admin" class="text-white text-lg font-bold">Admin Section</a> -->
-        <div class="dropdown dropdown-hover">
-          <div tabindex="0" role="button" class="btn">Login / Register</div>
-          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-60">
-            <li><a href="/user/login" class="hover:bg-secondary-1">Login to User Hub</a></li>
-            <li><a href="/admin" class="hover:bg-secondary-1">Login to Admin Dashboard</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
+  <body class="">
     <!-- Content -->
-    <div class="container mx-auto flex-grow"><%- body %></div>
+    <%- body %>
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">

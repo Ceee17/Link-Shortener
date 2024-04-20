@@ -11,10 +11,10 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@2.5.0/dist/full.css" rel="stylesheet" /> -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/777c5149ce.js" crossorigin="anonymous"></script>
+    <!-- Include custom CSS -->
     <link rel="stylesheet" href="/css/global.css" />
-
     <!-- import Fontawesome icon -->
-
     <script src="https://kit.fontawesome.com/777c5149ce.js" crossorigin="anonymous"></script>
     <!-- Include custom CSS -->
     <link rel="stylesheet" href="../css/style.css" />
@@ -23,7 +23,14 @@
   </head>
   <body class="">
     <!-- Content -->
-    <div class="flex h-screen"><%- body %></div>
+    <div class="hero min-h-screen" style="background-image: url('/assets/landingpage.png')">
+      <div class="flex flex-col justify-center items-center w-[80vw] h-[80vh] relative">
+        <img src="/assets/landingpagekotak.png" alt="background" class="h-full w-full ml-[19%]" />
+        <img src="/assets/text-sss-dashboard.png" alt="" class="absolute top-5 right-[-100px] w-[310px] h-[650px]" />
+        <%- include( 'user-sidebar' ) %>
+        <div class="flex justify-center items-center max-w-2xl mx-auto text-center text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"><%- body %></div>
+      </div>
+    </div>
     <!-- <div class="container mx-auto flex-grow"> -->
     <!-- </div> -->
 

@@ -1,12 +1,15 @@
-<h2>User Signup</h2>
-<form action="/user/create-account/submit" method="POST">
-  <div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required />
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required />
-  </div>
-  <button type="submit">Sign Up</button>
+<h1 class="font-bold text-[70px] text-black mb-5">User Sign Up</h1>
+
+<form action="/user/create-account/submit" method="post" class="flex flex-col mt-4 gap-6 items-center">
+  <label for="username" class="input input-bordered flex items-center gap-2 h-[60px] w-[320px] bg-[#D9D9D9] text-black">
+    <i class="fa-solid fa-user fa-lg"></i>
+    <input type="text" id="username" name="username" placeholder="Username" class="grow bg-[#D9D9D9] text-black" />
+  </label>
+  <label for="password" class="input input-bordered flex items-center gap-2 h-[60px] w-[320px] bg-[#D9D9D9] text-black">
+    <i class="fa-solid fa-key fa-lg"></i>
+    <input type="password" id="password" name="password" placeholder="Password" class="grow bg-[#D9D9D9] text-black" />
+  </label>
+  <button type="submit" class="btn bg-[#4F4789] w-[200px] text-xl font-bold text-white rounded-badge mt-[8%]">Sign Up</button>
 </form>
+
+<p class="mt-20">Already have an account? <a href="/user/login" class="text-blue-600 hover:text-blue-900">Login Now!</a></p>
