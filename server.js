@@ -3,6 +3,7 @@ const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const expressLayouts = require("express-ejs-layouts");
+const morgan = require("morgan");
 const ShortUrl = require("./models/shortUrl");
 const AboutUs = require("./models/aboutUs");
 const session = require("express-session");
@@ -26,6 +27,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(morgan("combined"));
 app.use(flash());
 
 require("./passport-config");

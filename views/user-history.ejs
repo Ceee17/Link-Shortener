@@ -1,0 +1,111 @@
+<%- include("layouts/user-sidebar.ejs") %>
+
+<div class="flex flex-col gap-2">
+  <!-- Display the newest short URL outside the collapsed section -->
+  <% if (shortUrls.length > 0) { %>
+  <div class="card card-side bg-base-100 shadow-xl">
+    <figure class=""><img src="http://api.qrserver.com/v1/create-qr-code/?data=<%= shortUrls[0].short %>&size=180x180" alt="QR Code" class="ml-5" /></figure>
+    <div class="card-body">
+      <h2 class="card-title">Description :</h2>
+      <p>Full Url: <%= shortUrls[0].full %></p>
+      <p>Short Url: <a href="/<%= shortUrls[0].short %>" class="text-blue-500"><%= shortUrls[0].short %></a></p>
+      <p>Visited: <%= shortUrls[0].clicks %></p>
+      <div class="card-actions justify-end">
+        <!-- Add unique identifier to the button's id -->
+        <button id="updateButton" class="btn btn-primary" onclick="updateShortId('<%= shortUrls[0]._id %>')">Update</button>
+        <form action="/<%= username%>/delete/<%= shortUrls[0]._id %>" method="POST" class="inline">
+          <button class="btn bg-red-900">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <!-- Display the collapsed section -->
+  <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+    <input type="checkbox" />
+    <div class="collapse-title text-xl font-medium">See More History!</div>
+    <div class="collapse-content">
+      <!-- Iterate over the rest of the short URLs -->
+      <% for (let i = 1; i < shortUrls.length; i++) { %>
+      <div class="card card-side bg-base-100 shadow-xl">
+        <figure><img src="http://api.qrserver.com/v1/create-qr-code/?data=http://localhost:5000/<%= shortUrls[i].short %>&size=180x180" alt="QR Code" /></figure>
+        <div class="card-body">
+          <h2 class="card-title"><%= shortUrls[i].description%></h2>
+          <p>Full Url: <%= shortUrls[i].full %></p>
+          <p>Short Url: <a href="/<%= shortUrls[i].short %>" class="text-blue-500"><%= shortUrls[i].short %></a></p>
+          <p>Visited: <%= shortUrls[i].clicks %></p>
+          <p>Time: <%= shortUrls[i].dateAdded %></p>
+          <div class="card-actions justify-end">
+            <!-- Add unique identifier to the button's id -->
+            <button id="updateButton" class="btn btn-primary" onclick="updateShortId('<%= shortUrls[i]._id %>')">Update</button>
+            <form action="/<%= username %>/delete/<%= shortUrls[i]._id %>" method="POST" class="inline">
+              <button class="btn bg-red-900">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<!-- Start MODAL BOX -->
+<dialog id="my_modal_3" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg">Update Short Url</h3>
+    <!-- Add input fields for updating data -->
+    <form id="updateForm" action="/<%= username %>/update/" method="POST">
+      <div class="mb-4">
+        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+        <input
+          type="text"
+          name="description"
+          id="description"
+          class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Enter description (optional)"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="fullUrl" class="block text-sm font-medium text-gray-700">Full URL</label>
+        <input
+          type="text"
+          name="fullUrl"
+          id="fullUrl"
+          class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Enter full URL"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="shortUrl" class="block text-sm font-medium text-gray-700">Short URL</label>
+        <input
+          type="text"
+          name="shortUrl"
+          id="shortUrl"
+          class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          placeholder="Enter short URL"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="clicks" class="block text-sm font-medium text-gray-700">Clicks</label>
+        <input type="number" name="clicks" id="clicks" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Enter clicks" required />
+      </div>
+      <!-- Submit button for updating data -->
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+    </form>
+  </div>
+</dialog>
+<!-- End MODAL BOX -->
+
+<!-- Add script for event listeners -->
+<script>
+  function updateShortId(id) {
+    document.getElementById("updateForm").action = `/<%= username %>/update/` + id; // Update form action
+    my_modal_3.showModal(); // Show the modal
+  }
+</script>

@@ -4,14 +4,20 @@
 
 <!-- content -->
 <main class="flex-1 container ml-72 mr-10 my-10">
-  <h1 class="text-center my-4 font-bold text-4xl">Users Section</h1>
+  <h1 class="text-center my-4 font-bold text-4xl">USERS</h1>
+
+  <div class="flex justify-end mb-5">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="my_modal_1.showModal()">Create New User</button>
+  </div>
 
   <table class="table-auto w-full border-collapse border border-blue-800">
     <thead class="bg-blue-500 text-white">
       <tr>
         <th class="px-4 py-2">Username</th>
         <th class="px-4 py-2">Password</th>
+        <th class="px-4 py-2">Is Google Auth</th>
         <th class="px-4 py-2">Is Admin</th>
+        <th class="px-4 py-2">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -21,10 +27,87 @@
         <td class="border px-4 py-2">
           <span class="password-display" style="white-space: pre-wrap"><%= user.password %></span>
         </td>
+        <td class="border px-4 py-2"><%= user.isGoogleAuth %></td>
         <td class="border px-4 py-2"><%= user.isAdmin %></td>
+        <td class="border px-4 py-2">
+          <!-- Buttons for actions -->
+
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onclick="updateUserData('<%= user._id %>')">Update</button>
+
+          <form action="/admin/users/delete/<%= user._id %>" method="POST" class="inline">
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+          </form>
+        </td>
       </tr>
       <% }) %>
     </tbody>
   </table>
 </main>
 <!-- end of content -->
+
+<!-- Start Modal Box for Create User -->
+<!-- Open the modal using ID.showModal() method -->
+<dialog id="my_modal_1" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg">Add User</h3>
+    <form id="createUserForm" action="/admin/users/create" method="POST" class="flex flex-col">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+
+      <label for="isAdmin">Is Admin:</label>
+      <select id="isAdmin" name="isAdmin">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+
+      <button type="submit" class="btn btn-info my-5">Add User</button>
+    </form>
+  </div>
+</dialog>
+<!-- END Modal Box for Create User -->
+
+<!-- Start MODAL BOX for update data -->
+<dialog id="my_modal_3" class="modal">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="font-bold text-lg">Update Short Url</h3>
+    <!-- Add input fields for updating data -->
+    <form id="updateForm" action="/admin/users/update/" method="POST">
+      <!-- Add input fields for updating user data -->
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+        <input type="text" name="username" id="username" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Enter username" required />
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" name="password" id="password" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Enter password" required />
+      </div>
+      <div class="mb-4">
+        <label for="isAdmin" class="block text-sm font-medium text-gray-700">Is Admin</label>
+        <select name="isAdmin" id="isAdmin" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+      </div>
+      <!-- Submit button for updating data -->
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>
+    </form>
+  </div>
+</dialog>
+<!-- End MODAL BOX  for update data -->
+
+<!-- Add script for event listeners -->
+<script>
+  function updateUserData(id) {
+    document.getElementById("updateForm").action = `/admin/users/update/` + id; // Update form action
+    my_modal_3.showModal(); // Show the modal
+  }
+</script>

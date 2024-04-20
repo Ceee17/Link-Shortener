@@ -2,15 +2,30 @@
 const express = require("express");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
-const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const User = require("../models/user");
 
 const getGoogleOAuth = passport.authenticate("google", { scope: ["profile"] });
 
-const getGoogleCallback = (req, res) => {
-  const username = req.user.username;
-  // Redirect user after successful authentication
-  res.redirect(`/${username}/dashboard`);
+const getGoogleCallback = async (req, res) => {
+  try {
+    const username = req.user.username;
+    // Find the user in the database and update isGoogleAuth to true
+    const user = await User.findOneAndUpdate(
+      { username: username },
+      { isGoogleAuth: true },
+      { new: true } // To return the updated user object
+    );
+    if (!user) {
+      // Handle case where user is not found
+      return res.status(404).send("User not found");
+    }
+
+    // Redirect user after successful authentication
+    res.redirect(`/${username}/dashboard`);
+  } catch (error) {
+    console.error("Error updating user: ", error);
+    res.status(500).send("Internal Server Error!");
+  }
 };
 
 const userCreateAccount = async (req, res) => {
@@ -52,11 +67,6 @@ const userLoginSubmit = passport.authenticate("local", {
 
 const getUserLoginViews = (req, res) => {
   res.render("user-login", { layout: "layouts/form-layout", title: "User Login Page" });
-};
-
-const getUserViews = (req, res) => {
-  const username = req.params.username;
-  res.render("dashboard", { layout: "layouts/admin-layout", title: "User Dashboard", username: username });
 };
 
 const getAdminLoginViews = (req, res) => {
@@ -103,16 +113,6 @@ const adminCreateAccount = async (req, res) => {
   }
 };
 
-const getAdminViews = async (req, res) => {
-  try {
-    const shortUrls = await ShortUrl.find();
-    res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
-  } catch (error) {
-    console.error("Error fetching short URLs:", error);
-    res.status(500).send("Error fetching short URLs");
-  }
-};
-
 module.exports = {
   getGoogleOAuth,
   getGoogleCallback,
@@ -120,10 +120,8 @@ module.exports = {
   getUserCreateAccountViews,
   userLoginSubmit,
   getUserLoginViews,
-  getUserViews,
   getAdminLoginViews,
   adminLoginSubmit,
   getAdminCreateAccountViews,
   adminCreateAccount,
-  getAdminViews,
 };

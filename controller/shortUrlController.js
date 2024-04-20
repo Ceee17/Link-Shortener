@@ -17,6 +17,11 @@ const shortenUrl = async (req, res) => {
 
   const customShortId = req.body.customShortId; // Assuming you have a form field for custom short ID
   let shortUrl;
+  // Validate input URL format using regex
+  const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})(\/[^\s]*)?$/i;
+  if (!urlRegex.test(req.body.fullUrl)) {
+    return res.status(400).json({ message: "Please enter a valid URL." });
+  }
 
   if (customShortId) {
     const existingShortUrl = await ShortUrl.findOne({ short: customShortId });
@@ -38,8 +43,10 @@ const getShortenedUrl = async (req, res) => {
 
   shortUrl.clicks++;
   shortUrl.save();
+  // window.location.reload();
 
   res.redirect(shortUrl.full);
+  // res.json({ redirectTo: shortUrl.full, reloadPage: true });
 };
 
 module.exports = { shortenUrl, getShortenedUrl };

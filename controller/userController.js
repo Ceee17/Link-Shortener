@@ -2,6 +2,11 @@ const fetch = require("node-fetch");
 const ShortUrl = require("../models/shortUrl");
 const shortId = require("shortid");
 
+const getUserViews = (req, res) => {
+  const username = req.params.username;
+  res.render("dashboard", { layout: "layouts/user-layout", title: "User Dashboard", username: username });
+};
+
 // Server-side handling (shortenUrlUser controller function)
 const shortenUrlUser = async (req, res) => {
   let createdBy;
@@ -16,6 +21,12 @@ const shortenUrlUser = async (req, res) => {
   const customShortId = req.body.customShortId; // Assuming you have a form field for custom short ID
   let shortUrl;
 
+  // Validate input URL format using regex
+  const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})(\/[^\s]*)?$/i;
+  if (!urlRegex.test(req.body.fullUrl)) {
+    return res.status(400).json({ message: "Please enter a valid URL." });
+  }
+
   if (customShortId) {
     const existingShortUrl = await ShortUrl.findOne({ short: customShortId });
     if (existingShortUrl) {
@@ -29,6 +40,68 @@ const shortenUrlUser = async (req, res) => {
 
   // Send response with inserted data
   res.status(201).json({ message: "Short URL created successfully", shortUrl });
+};
+
+getUserHistory = async (req, res) => {
+  try {
+    const username = req.params.username; // Assuming the username is passed as a route parameter
+    const shortUrls = await ShortUrl.find({ createdBy: username });
+
+    // Reverse the array to display the newest short URLs at the top
+    shortUrls.reverse();
+
+    res.render("user-history", { layout: "layouts/user-layout", title: "User History", username: username, shortUrls });
+  } catch (error) {
+    console.error("Error fetching user history:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+// controller to handle delete requests
+const userDeleteData = async (req, res) => {
+  try {
+    const username = req.user.username;
+    await ShortUrl.findByIdAndDelete(req.params.id);
+    res.redirect(`/${username}/history`);
+  } catch (error) {
+    console.error("Error deleting URL:", error);
+    res.status(500).send("Error deleting URL");
+  }
+};
+
+// controller to handle update operation
+const userUpdateData = async (req, res) => {
+  const { id, username } = req.params;
+  const { description, fullUrl, shortUrl, clicks } = req.body;
+
+  try {
+    // Find the URL document by ID
+    const url = await ShortUrl.findById(id);
+
+    // Update the URL properties
+    if ((description !== undefined && description != null) || description !== "none") {
+      url.description = description;
+    }
+    if (fullUrl !== undefined) {
+      url.full = fullUrl;
+    }
+    if (shortUrl !== undefined) {
+      url.short = shortUrl;
+    }
+    if (clicks !== undefined) {
+      url.clicks = clicks;
+    }
+
+    // Save the updated URL document
+    await url.save();
+
+    // Redirect back to the admin page
+    res.redirect(`/${username}/history`);
+    // res.status(201).json({ message: "URL Updated Successfully!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating URL");
+  }
 };
 
 // Disini kita pakai revoke url karna alasan keamanan,
@@ -67,4 +140,4 @@ userLogout = async (req, res) => {
   });
 };
 
-module.exports = { shortenUrlUser, userLogout };
+module.exports = { getUserViews, shortenUrlUser, getUserHistory, userDeleteData, userUpdateData, userLogout };

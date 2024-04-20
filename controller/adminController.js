@@ -1,5 +1,4 @@
 // ./controller/adminController.js
-const express = require("express");
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 
 // define a controller to handle sorting
@@ -9,12 +8,9 @@ const adminSortData = async (req, res) => {
 
   try {
     switch (sortBy) {
-      case "fullUrl":
-      case "shortUrl":
-      case "description":
-      case "createdBy":
-        shortUrls = await ShortUrl.find().sort({ [sortBy]: 1 });
-        break;
+      // case "createdBy":
+      //   shortUrls = await ShortUrl.find().sort({ [sortBy]: 1 });
+      //   break;
       case "clicks":
         shortUrls = await ShortUrl.find().sort({ clicks: -1 });
         break;
@@ -56,6 +52,26 @@ const adminSearchData = async (req, res) => {
     res.status(500).send("Error searching for shortUrls");
   }
 };
+// Define a controller to handle search requests
+const adminFilterUsers = async (req, res) => {
+  try {
+    // Get the search query from the request parameters
+    const query = req.query.filter;
+
+    // Search for shortUrls that match the query
+    const shortUrls = await ShortUrl.find({
+      $or: [
+        { createdBy: { $regex: query, $options: "i" } }, // Case-insensitive search for createdBy
+      ],
+    });
+
+    // Render the admin page with the search results
+    res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
+  } catch (error) {
+    console.error("Error searching for shortUrls:", error);
+    res.status(500).send("Error searching for shortUrls");
+  }
+};
 
 // Add a controller to handle delete requests
 const adminDeleteData = async (req, res) => {
@@ -76,17 +92,25 @@ const adminResetData = async (req, res) => {
 // Route to handle update operation
 const adminUpdateData = async (req, res) => {
   const { id } = req.params;
-  const { fullUrl, shortUrl, clicks } = req.body;
+  const { description, fullUrl, shortUrl, clicks } = req.body;
 
   try {
     // Find the URL document by ID
     const url = await ShortUrl.findById(id);
 
     // Update the URL properties
-    url.full = fullUrl;
-    url.short = shortUrl;
-    url.clicks = clicks;
-
+    if ((description !== undefined && description != null) || description !== "none") {
+      url.description = description;
+    }
+    if (fullUrl !== undefined) {
+      url.full = fullUrl;
+    }
+    if (shortUrl !== undefined) {
+      url.short = shortUrl;
+    }
+    if (clicks !== undefined) {
+      url.clicks = clicks;
+    }
     // Save the updated URL document
     await url.save();
 
@@ -112,4 +136,14 @@ const adminLogout = (req, res) => {
   });
 };
 
-module.exports = { adminSortData, adminSearchData, adminDeleteData, adminResetData, adminUpdateData, adminLogout };
+const getAdminViews = async (req, res) => {
+  try {
+    const shortUrls = await ShortUrl.find();
+    res.render("admin", { layout: "layouts/admin-layout", title: "Admin Section", shortUrls: shortUrls });
+  } catch (error) {
+    console.error("Error fetching short URLs:", error);
+    res.status(500).send("Error fetching short URLs");
+  }
+};
+
+module.exports = { adminSortData, adminSearchData, adminFilterUsers, adminDeleteData, adminResetData, adminUpdateData, adminLogout, getAdminViews };

@@ -6,4 +6,12 @@ function isAdminAuthenticated(req, res, next) {
   res.redirect("/admin/login");
 }
 
-module.exports = { isAdminAuthenticated };
+function isUserAuthenticated(req, res, next) {
+  // Check if user is authenticated
+  if (req.isAuthenticated()) {
+    return next(); // User is authenticated, proceed to the next middleware
+  }
+  res.redirect("/user/login"); // Redirect to login page if user is not authenticated
+}
+
+module.exports = { isAdminAuthenticated, isUserAuthenticated };
