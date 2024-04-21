@@ -3,42 +3,24 @@
 <%- include('layouts/sidebar.ejs') %>
 <!-- content -->
 <main class="flex-1 container ml-72 mr-10 my-10">
-  <h1 class="text-center my-4 font-bold text-4xl">HISTORY</h1>
-  <div class="flex justify-between items-center my-auto">
-    <!-- Sorting dropdown -->
-    <div class="flex justify-start mb-4">
-      <label for="sortDropdown" class="mr-2">Sort by:</label>
-      <select id="sortDropdown">
-        <option value="dateAdded">Date Added</option>
-        <option value="clicks">Clicks</option>
-        <!-- Add more options for other sorting criteria if needed -->
-      </select>
-    </div>
-    <!-- Search form -->
-    <form action="/admin/search" method="GET" class="mb-4">
-      <div class="flex justify-end">
-        <input type="text" name="query" placeholder="Search" class="p-2 rounded border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded">Search</button>
-      </div>
-    </form>
-  </div>
+  <h1 class="text-center my-4 font-bold text-4xl">DASHBOARD</h1>
 
   <!-- Filter Dropdown -->
   <details class="dropdown">
-    <summary class="m-1 btn" id="filterDropdown">Filter</summary>
+    <summary class="mb-3 btn btn-outline btn-info w-[280px] text-xl font-semibold rounded" id="filterDropdown">Filter</summary>
     <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-[28rem]">
       <li>
         <div class="flex flex-col mx-3">
           <!-- CreatedBy input -->
           <form action="/admin/filter" method="GET">
-            <div class="form-control w-52">
+            <div class="form-control w-52 flex justify-center items-center gap-5">
               <label class="cursor-pointer label">
-                <span class="label-text">CreatedBy</span>
+                <span class="label-text mr-5 text-lg font-semibold">CreatedBy</span>
                 <input type="text" name="filter" class="input input-bordered" placeholder="Search by username" />
               </label>
-              <div class="flex gap-2">
-                <button type="button" class="btn btn-secondary ml-2" onclick="resetFilter()">Reset Filter</button>
-                <button type="submit" class="btn btn-primary mr-2">Apply</button>
+              <div class="flex gap-2 w-[200px]">
+                <button type="button" class="btn btn-secondary ml-2 rounded-badge w-[50%]" onclick="resetFilter()">Reset Filter</button>
+                <button type="submit" class="btn btn-primary mr-2 rounded-badge w-[50%]">Apply</button>
               </div>
             </div>
           </form>
@@ -47,12 +29,32 @@
     </ul>
   </details>
 
+  <div class="flex justify-between items-center my-auto">
+    <!-- Sorting dropdown -->
+    <div class="flex justify-start items-center mb-4 w-[600px]">
+      <label for="sortDropdown" class="w-[80px] text-xl">Sort by:</label>
+      <select id="sortDropdown" class="select select-info text-lg w-[200px] max-w-xs">
+        <option value="" disabled selected></option>
+        <option value="dateAdded">Date Added</option>
+        <option value="clicks">Clicks</option>
+        <!-- Add more options for other sorting criteria if needed -->
+      </select>
+    </div>
+    <!-- Search form -->
+    <form action="/admin/search" method="GET" class="mb-4">
+      <div class="flex justify-end">
+        <input type="text" name="query" placeholder="Search" class="p-2 rounded input input-bordered input-info w-full max-w-xs" />
+        <button type="submit" class="bg-info hover:bg-blue-700 text-white font-bold text-xl py-2 px-4 ml-2 rounded">Search</button>
+      </div>
+    </form>
+  </div>
+
   <%- include('layouts/table-body.ejs') %>
 
   <form action="/admin/reset" method="POST" class="mt-4">
     <div class="flex justify-end">
       <!-- Add a Reset button -->
-      <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mb-4 rounded-lg">Reset</button>
+      <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mb-4 rounded-badge w-40">Reset</button>
     </div>
   </form>
 </main>

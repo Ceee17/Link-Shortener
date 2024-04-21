@@ -24,14 +24,16 @@
       <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
       <td class="border px-4 py-2"><%= shortUrl.dateAdded %></td>
       <td class="border px-4 py-2">
-        <!-- Add buttons for CRUD operations -->
-        <button id="updateButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded update-button" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
+        <div class="flex justify-center items-center">
+          <!-- Add buttons for CRUD operations -->
+          <button id="updateButton" class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-badge update-button text-bold text-lg" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
 
-        <!-- Add form for delete button -->
-        <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="inline">
-          <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
-        </form>
-        <button class="btn bg-green-700" onclick="viewQR('<%= shortUrl.short %>')">View QR</button>
+          <!-- Add form for delete button -->
+          <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="flex justify-center items-center py-2 px-2">
+            <button type="submit" class="btn bg-red-500 hover:bg-red-700 w-24 text-white font-bold py-2 px-4 rounded-badge text-bold text-lg">Delete</button>
+          </form>
+          <button class="btn bg-green-700 py-2 px-4 rounded-badge text-bold text-lg text-white" onclick="viewQR('<%= shortUrl.short %>')">View QR</button>
+        </div>
       </td>
     </tr>
     <% }) %>

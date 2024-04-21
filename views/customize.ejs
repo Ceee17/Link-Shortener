@@ -4,16 +4,26 @@
 <main class="flex-1 container ml-72 mr-10 my-10">
   <h1 class="text-center my-4 font-bold text-4xl">CUSTOMIZE</h1>
 
-  <h2>Edit About Us Description</h2>
+  <div class="hero h-3/4">
+    <h2>Edit About Us Description</h2>
+    <div class="flex flex-col justify-center items-center gap-3">
+      <% if (aboutUs) { %>
+      <label class="form-control">
+        <div class="label">
+          <div class="label-text">Customize About Us Section</div>
+        </div>
 
-  <% if (aboutUs) { %>
-  <form id="updateAboutUsForm" action="/admin/customize/update" method="POST">
-    <textarea name="content" id="content" rows="5" cols="50"><%= aboutUs.content %></textarea>
-    <button type="submit">Save</button>
-  </form>
-  <% } else { %>
-  <p>No About Us description found.</p>
-  <% } %>
+        <form id="updateAboutUsForm" action="/admin/customize/update" method="POST">
+          <textarea placeholder="Ini adalah About Us Section" name="content" id="content" rows="5" cols="50" class="textarea textarea-bordered h-24 bg-[#D9D9D9] text-black"><%= aboutUs.content %></textarea>
+        </form>
+      </label>
+      <button type="submit" class="btn btn-primary w-52 rounded-badge text-xl">Save</button>
+
+      <% } else { %>
+      <p>No About Us description found.</p>
+      <% } %>
+    </div>
+  </div>
 </main>
 <!-- end of content -->
 

@@ -1,15 +1,21 @@
 <!-- Sidebar -->
 <aside class="h-screen flex gap-5 bg-gray-800 fixed z-10 left-0 top-0 text-white w-64">
   <div class="p-4">
-    <h1 class="text-xl font-bold flex-start">Admin Page</h1>
+    <h1 class="text-white text-3xl font-bold flex items-center">Admin Page</h1>
     <ul class="mt-4">
-      <li class="py-2 px-8 hover:bg-gray-700"><a href="/admin">Dashboard</a></li>
-      <li class="py-2 px-8 hover:bg-gray-700"><a href="/admin/users">Users</a></li>
-      <li class="py-2 px-8 hover:bg-gray-700"><a href="/admin/customize">Customize</a></li>
+      <li class="py-2 px-8 hover:bg-gray-700">
+        <a href="/admin" class="flex items-center gap-3 text-xl text-bold"> <i class="fa-solid fa-table-columns fa-lg"></i>Dashboard</a>
+      </li>
+      <li class="py-2 px-8 hover:bg-gray-700">
+        <a href="/admin/users" class="flex items-center gap-3 text-xl text-bold"><i class="fa-solid fa-user"></i>Users</a>
+      </li>
+      <li class="py-2 px-8 hover:bg-gray-700">
+        <a href="/admin/customize" class="flex items-center gap-3 text-xl text-bold"><i class="fa-solid fa-gear"></i>Customize</a>
+      </li>
     </ul>
     <div class="p-4">
-      <form action="/admin/logout" method="POST">
-        <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">Logout</button>
+      <form action="/admin/logout" method="POST" class="relative">
+        <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-bold text-xl w-[200px] py-2 px-4 rounded-badge absolute bottom-[-650px] left-[-10px]">Logout</button>
       </form>
     </div>
   </div>

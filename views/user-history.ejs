@@ -23,8 +23,16 @@
       </div>
     </div>
   </div>
-  <% } %>
+  <% } else { %>
+  <!-- If there are no short URLs, display an alert -->
+  <div class="alert alert-info w-[800px]" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
 
+    <p>No data in this account.</p>
+  </div>
+  <% } %> <% if(shortUrls.length > 0){ %>
   <!-- Display the collapsed section -->
   <div class="collapse collapse-arrow border border-base-300 bg-base-200 grow">
     <input type="checkbox" id="collapseSection" />
@@ -57,6 +65,7 @@
     </div>
   </div>
 </div>
+<% } %>
 
 <!-- Start MODAL BOX FOR QR CODE -->
 <!-- Open the modal using ID.showModal() method -->

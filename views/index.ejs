@@ -26,7 +26,7 @@
             <label for="fullUrl" class="font-semibold text-start text-xl">Input URL</label>
             <div class="flex flex-col items-end justify-center gap-2">
               <input required placeholder="https://www.example.com" type="url" name="fullUrl" id="fullUrl" class="border border-gray-300 rounded px-5 py-2 mr-3 bg-[#D9D9D9] text-black w-[500px]" />
-              <button type="submit" class="text-white font-bold py-2 px-6 rounded-badge text-xl mr-[2%] bg-[#4F4789] hover:border">Shrink</button>
+              <button type="submit" class="btn text-white font-bold py-2 px-6 rounded-badge text-xl mr-[2%] bg-[#4F4789] hover:border hover:bg-[#33427a]">Shrink</button>
             </div>
             <!-- <label for="customShortId">Custom Short ID:</label><br />
               <input type="text" id="customShortId" name="customShortId" /> -->
@@ -34,9 +34,14 @@
         </form>
 
         <% if(showShortenedLink && shortUrls.length > 0) { %>
-        <div>
-          <h4 class="text-center">Your Shortened Link is <a href="<%= shortUrls[0].short %>" class="text-blue-500"><%= shortUrls[0].short %></a></h4>
-          <h4 class="text-center"><a href="/user/login" class="text-blue-500">Login now to unlock more feature!</a></h4>
+        <div class="alert alert-success w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div class="flex flex-col w-full grow">
+            <h4 class="grow text-xl">Your Shortened Link is <a href="<%= shortUrls[0].short %>" class="text-blue-500 hover:underline hover:text-blue-900"><%= shortUrls[0].short %></a></h4>
+            <h4 class="grow text-xl"><a href="/user/login" class="text-blue-500 hover:underline hover:text-blue-900">Login now to unlock more feature!</a></h4>
+          </div>
         </div>
         <% } %>
       </div>
