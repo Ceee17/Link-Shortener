@@ -43,6 +43,7 @@ const getShortenedUrl = async (req, res) => {
 
   shortUrl.clicks++;
   shortUrl.save();
+  // window.location.reload();
 
   res.redirect(shortUrl.full);
 
