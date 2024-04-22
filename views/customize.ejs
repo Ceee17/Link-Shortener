@@ -5,22 +5,44 @@
   <h1 class="text-center my-4 font-bold text-4xl">CUSTOMIZE</h1>
 
   <div class="hero h-3/4">
-    <h2>Edit About Us Description</h2>
-    <div class="flex flex-col justify-center items-center gap-3">
-      <% if (aboutUs) { %>
-      <label class="form-control">
-        <div class="label">
-          <div class="label-text">Customize About Us Section</div>
-        </div>
+    <div class="flex gap-20 mr-20">
+      <!-- WRAPPER KIRI -->
+      <div class="flex flex-col justify-center items-center gap-3">
+        <% if (aboutUs) { %>
+        <label class="form-control">
+          <div class="label">
+            <div class="label-text">Customize About Us Section</div>
+          </div>
 
-        <form id="updateAboutUsForm" action="/admin/customize/update" method="POST">
-          <textarea placeholder="Ini adalah About Us Section" name="content" id="content" rows="5" cols="50" class="textarea textarea-bordered h-24 bg-[#D9D9D9] text-black"><%= aboutUs.content %></textarea>
-        </form>
-      </label>
-      <button type="submit" class="btn btn-primary w-52 rounded-badge text-xl">Save</button>
+          <form id="updateAboutUsForm" action="/admin/customize/update" method="POST" class="flex flex-col justify-center items-center gap-5">
+            <textarea placeholder="Ini adalah About Us Section" name="content" id="content" rows="5" cols="50" class="textarea textarea-bordered h-24 bg-[#D9D9D9] text-black"><%= aboutUs.content %></textarea>
+            <button type="submit" class="btn btn-primary w-52 rounded-badge text-xl">Save</button>
+          </form>
+        </label>
 
+        <% } else { %>
+        <p>No About Us description found.</p>
+        <% } %>
+      </div>
+      <!-- WRAPPER KANAN -->
+      <% if (contactUs) { %>
+
+      <div class="flex flex-col justify-center items-center gap-3">
+        <label class="form-control">
+          <div class="label">
+            <div class="label-text">Customize Contact Us Section</div>
+          </div>
+
+          <form id="updateContactUsForm" action="/admin/customize/contact-us" method="POST" class="flex flex-col justify-center items-center gap-5">
+            <input type="text" placeholder="Address" class="input input-bordered w-full max-w-xs" id="address" name="address" />
+            <input type="text" placeholder="Email" class="input input-bordered w-full max-w-xs" id="email" name="email" />
+            <input type="text" placeholder="Phone Number" class="input input-bordered w-full max-w-xs appearance-none" id="phoneNumber" name="phoneNumber" />
+            <button type="submit" class="btn btn-primary w-52 rounded-badge text-xl">Save</button>
+          </form>
+        </label>
+      </div>
       <% } else { %>
-      <p>No About Us description found.</p>
+      <p>No Contact Us description found.</p>
       <% } %>
     </div>
   </div>
@@ -59,9 +81,44 @@
     }
   };
 
+  // Function to handle the form submission
+  const updateContactUs = async () => {
+    const address = document.getElementById("address").value;
+    const email = document.getElementById("email").value;
+    const phoneNumber = document.getElementById("phoneNumber").value;
+
+    try {
+      const response = await fetch("/admin/customize/contact-us", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ address, email, phoneNumber }),
+      });
+
+      if (response.ok) {
+        // Show SweetAlert popup on success
+        swal("Success", "Contact Us description updated successfully", "success");
+      } else {
+        // Show SweetAlert popup on error
+        swal("Error", "An error occurred", "error");
+      }
+    } catch (error) {
+      console.error("Error updating Contact Us description:", error);
+      // Show SweetAlert popup on error
+      swal("Error", "An error occurred", "error");
+    }
+  };
+
   // Add event listener to the form submission
   document.getElementById("updateAboutUsForm").addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent the default form submission
     updateAboutUs(); // Call the updateAboutUs function
+  });
+
+  // Add event listener to the form submission
+  document.getElementById("updateContactUsForm").addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    updateContactUs(); // Call the updateContactUs function
   });
 </script>

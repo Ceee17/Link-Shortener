@@ -15,10 +15,8 @@ const { authGoogleMiddleware } = require("../middleware/authGoogleMiddleware");
 
 // Route for initiating Google OAuth authentication
 router.get("/auth/google", getGoogleOAuth);
-
 // Callback route after Google authentication
 router.get("/auth/google/callback", authGoogleMiddleware, getGoogleCallback);
-
 router.post("/user/create-account/submit", userCreateAccount);
 router.get("/user/create-account", getUserCreateAccountViews);
 router.post("/user/login/submit", userLoginSubmit, (req, res) => {
