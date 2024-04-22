@@ -1,3 +1,6 @@
+DISCLAIMER!
+TERDAPAT ERROR PADA SAAT KAMI MELAKUKAN COMMIT, SEHINGGA COMMIT HISTORY TERUS MENERUS TERUPDATE BUKANNYA MENAMBAH, UTK PEMBAGIAN TUGAS KELOMPOK KAMI SERTAKAN PADA LAPORAN
+
 aplikasi ini dibuat dengan DaisyUI(Tailwind css), ExpressJS, EJS, mongoose(MongoDB), dan masih banyak package lainnya...
 
 sebelum di run pastikan dulu sudah update dependecies nya
