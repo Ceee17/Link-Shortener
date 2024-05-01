@@ -12,6 +12,7 @@ const flash = require("express-flash");
 const passport = require("passport");
 const app = express();
 const port = process.env.PORT || 5000;
+const host = process.env.NODE_ENV !== "production" ? "localhost" : "0.0.0.0";
 
 mongoose.connect(process.env.MONGODB_URI, {
   bufferCommands: true,
@@ -79,6 +80,6 @@ app.use("/", adminRoutes);
 
 app.use("/", shortUrlRoutes);
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}/`);
+app.listen(port, host, () => {
+  console.log(`Server running on http://${host}:${port}/`);
 });
