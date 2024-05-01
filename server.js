@@ -72,11 +72,11 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/", authRoutes);
-app.use("/", userRoutes);
 app.use("/", adminUsersRoutes);
 app.use("/", adminCustomizeRoutes);
 
 app.use("/", adminRoutes);
+app.use("/", userRoutes);
 
 app.use("/", shortUrlRoutes);
 
