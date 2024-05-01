@@ -49,27 +49,6 @@
     </form>
   </div>
 
-  <!-- Filter Dropdown -->
-  <details id="filterDropdown" class="dropdown">
-    <summary class="m-1 btn">Filter</summary>
-    <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-[28rem]">
-      <li>
-        <div class="flex flex-col mx-3">
-          <!-- CreatedBy input -->
-          <form action="/admin/filter" method="GET">
-            <div class="form-control w-52">
-              <label class="cursor-pointer label">
-                <span class="label-text">CreatedBy</span>
-                <input type="text" name="filter" class="input input-bordered" placeholder="Search by username" />
-              </label>
-              <button type="submit" class="btn btn-primary">Apply</button>
-            </div>
-          </form>
-        </div>
-      </li>
-    </ul>
-  </details>
-
   <%- include('layouts/table-body.ejs') %>
 
   <form action="/admin/reset" method="POST" class="mt-4">
