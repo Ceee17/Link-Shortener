@@ -13,10 +13,25 @@
       </li>
     </ul>
     <div class="p-4 relative">
-      <form action="/user/logout" method="POST" class="absolute bottom-[-680px] left-0">
+      <form id="logoutForm" action="/user/logout" method="POST" class="absolute bottom-[-680px] left-0">
         <button type="submit" class="bg-red-500 hover:bg-red-800 text-white font-bold py-2 w-56 rounded-badge">Logout</button>
       </form>
     </div>
   </div>
 </aside>
 <!-- end of sidebar -->
+
+<script>
+  // Function to confirm logout when clicking the logout button
+  function confirmLogout(event) {
+    // Display a confirmation dialog
+    if (!confirm("Are you sure you want to logout?")) {
+      // If the user cancels logout, prevent the form submission
+      event.preventDefault();
+    }
+  }
+
+  // Add event listener to the logout form to trigger the confirmation dialog
+  const logoutForm = document.getElementById("logoutForm");
+  logoutForm.addEventListener("submit", confirmLogout);
+</script>

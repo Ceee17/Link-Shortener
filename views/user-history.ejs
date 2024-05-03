@@ -56,7 +56,8 @@
             <!-- Add unique identifier to the button's id -->
             <button id="updateButton" class="btn btn-primary rounded-badge w-32" onclick="updateShortId('<%= shortUrls[i]._id %>')">Update</button>
             <form action="/<%= username %>/delete/<%= shortUrls[i]._id %>" method="POST" class="inline">
-              <button class="btn bg-red-900 rounded-badge w-32">Delete</button>
+              <!-- Move the onclick event to the button element -->
+              <button type="button" class="btn bg-red-900 rounded-badge w-32">Delete</button>
             </form>
           </div>
         </div>

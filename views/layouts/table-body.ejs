@@ -29,8 +29,8 @@
           <button id="updateButton" class="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-badge update-button text-bold text-lg" onclick="updateShortId('<%= shortUrl._id %>')">Update</button>
 
           <!-- Add form for delete button -->
-          <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="flex justify-center items-center py-2 px-2">
-            <button type="submit" class="btn bg-red-500 hover:bg-red-700 w-24 text-white font-bold py-2 px-4 rounded-badge text-bold text-lg">Delete</button>
+          <form action="/admin/delete/<%= shortUrl._id %>" method="POST" class="flex justify-center items-center py-2 px-2" id="deleteForm_<%= shortUrl._id %>">
+            <button type="submit" class="btn bg-red-500 hover:bg-red-700 w-24 text-white font-bold py-2 px-4 rounded-badge text-bold text-lg" onclick="confirmDelete('<%= shortUrl._id %>')">Delete</button>
           </form>
           <button class="btn bg-green-700 py-2 px-4 rounded-badge text-bold text-lg text-white" onclick="viewQR('<%= shortUrl.short %>')">View QR</button>
         </div>
@@ -66,5 +66,14 @@
     document.getElementById("qrCodeImage").src = qrUrl;
     document.getElementById("caption").textContent = "http://localhost:5000/" + shortUrl;
     modal.showModal();
+  }
+
+  // Function to confirm deletion when clicking the delete button
+  function confirmDelete(shortUrlId) {
+    // Display a confirmation dialog
+    if (confirm("Are you sure you want to delete this item?")) {
+      // If the user confirms deletion, submit the form
+      document.getElementById("deleteForm_" + shortUrlId).submit();
+    }
   }
 </script>

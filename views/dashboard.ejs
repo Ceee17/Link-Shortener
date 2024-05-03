@@ -44,7 +44,9 @@
       <div class="col-1 flex flex-col items-start">
         <p>Message: <span id="modal-message"></span></p>
         <p>Full URL: <span id="modal-fullUrl"></span></p>
-        <p>Short URL: <span id="modal-shortUrl"></span></p>
+        <p>
+          Short URL: <a href="" id="href-modal-shortUrl"><span id="modal-shortUrl"></span></a>
+        </p>
         <p>Clicks: <span id="modal-clicks"></span></p>
         <p>Description: <span id="modal-description"></span></p>
         <p>Created By: <span id="modal-createdBy"></span></p>
@@ -105,6 +107,7 @@
         // Set data to modal content
         document.getElementById("modal-message").innerText = data.message;
         document.getElementById("modal-fullUrl").innerText = data.shortUrl.full;
+        document.getElementById("href-modal-shortUrl").href = "/" + data.shortUrl.short;
         document.getElementById("modal-shortUrl").innerText = data.shortUrl.short;
         document.getElementById("modal-clicks").innerText = data.shortUrl.clicks;
         document.getElementById("modal-description").innerText = data.shortUrl.description;
