@@ -2,11 +2,13 @@
 const express = require("express");
 const ShortUrl = require("../models/shortUrl"); // Import ShortUrl model
 const AboutUs = require("../models/aboutUs"); // Import ShortUrl model
+const ContactUs = require("../models/contactUs"); // Import ShortUrl model
 const shortId = require("shortid");
 
 const shortenUrl = async (req, res) => {
   let createdBy;
   const aboutUs = await AboutUs.findOne();
+  const contactUs = await ContactUs.findOne();
   const description = req.body.description;
 
   if (req.user) {
@@ -34,7 +36,7 @@ const shortenUrl = async (req, res) => {
     shortUrl = await ShortUrl.create({ full: req.body.fullUrl, short: generatedShortId, description: description, createdBy: createdBy, dateAdded: Date.now() });
   }
 
-  res.render("index", { layout: "layouts/main-layout", title: "Snipify", aboutUsContent: aboutUs.content, showShortenedLink: true, shortUrls: [shortUrl] });
+  res.render("index", { layout: "layouts/main-layout", title: "Snipify", aboutUsContent: aboutUs.content, contactUs, showShortenedLink: true, shortUrls: [shortUrl] });
 };
 
 const getShortenedUrl = async (req, res) => {
