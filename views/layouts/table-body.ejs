@@ -18,7 +18,7 @@
     <% shortUrls.forEach(shortUrl => { %>
     <tr>
       <td class="border px-4 py-2"><a href="<%= shortUrl.full %>"><%= shortUrl.full %></a></td>
-      <td class="border px-4 py-2"><a href="<%= shortUrl.short %>" class="text-blue-500 hover:text-blue-900 hover:underline"><%= shortUrl.short %></a></td>
+      <td class="border px-4 py-2"><a href="/<%= shortUrl.short %>" class="text-blue-500 hover:text-blue-900 hover:underline"><%= shortUrl.short %></a></td>
       <td class="border px-4 py-2"><%= shortUrl.clicks %></td>
       <td class="border px-4 py-2"><%= shortUrl.description %></td>
       <td class="border px-4 py-2"><%= shortUrl.createdBy %></td>
